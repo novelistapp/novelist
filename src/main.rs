@@ -4,7 +4,9 @@ extern crate serde_derive;
 extern crate serde_json;
 
 mod state;
+use state::Novel;
+
 
 fn main() {
-    println!("Hello, world!");
+    Novel::create(".", "Starlike", "Katharina Ariane").unwrap();
 }
