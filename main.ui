@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.20.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkListStore" id="liststore1"/>
-  <object class="GtkApplicationWindow">
+  <object class="GtkApplicationWindow" id="mainwindow">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox">
@@ -22,7 +22,7 @@
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu">
+                  <object class="GtkMenu" id="mainwindow-menu-file">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -68,7 +68,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
+                      <object class="GtkImageMenuItem" id="mainwindow-menu-file-quit">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -392,7 +392,7 @@
         </child>
       </object>
     </child>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
   </object>
