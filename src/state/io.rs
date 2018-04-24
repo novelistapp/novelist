@@ -7,22 +7,21 @@ use std::io::{Read, Write, Error as IoError};
 /// Represents the novel config on disk
 ///
 /// This is a file with the `.novel` extention
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NovelData {
-    name: String,
-    author: String,
-    version: u8,
-
-    external_universe: Option<String>,
+    pub name: String,
+    pub author: String,
+    pub version: u8,
+    pub external_universe: Option<String>,
 }
 
 /// Represents the universe config on disk
 ///
 /// This is a file with the `.universe` extention
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UniverseData {
-    name: String,
-    description: String,
+    pub name: String,
+    pub description: String,
 }
 
 impl NovelData {

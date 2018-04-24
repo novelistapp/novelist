@@ -3,12 +3,12 @@
 
 /// A complete text Paragraph that ends with a "." (normally)
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) struct Paragraph {
+pub struct Paragraph {
     snippets: Vec<Sentence>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) struct Sentence {
+pub struct Sentence {
     snippets: Vec<TextSnippet>,
     terminator: char
 }
@@ -33,14 +33,14 @@ pub(crate) struct Sentence {
 /// sentence.push(TextSnippet::new("text!!!", TextStyle::Bold));
 /// ```
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) struct TextSnippet {
+pub struct TextSnippet {
     text: String,
     style: TextStyle,
 }
 
 /// Describes a style of text
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) enum TextStyle {
+pub enum TextStyle {
     /// Normally render this text
     Plain,
     /// Make it *italics*
