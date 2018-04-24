@@ -12,7 +12,6 @@ use gio::prelude::*;
 use gtk::prelude::*;
 
 mod state;
-use state::Novel;
 
 // make moving clones into closures more convenient
 macro_rules! clone {
