@@ -1,5 +1,5 @@
 use super::text::Paragraph;
-
+use std::fmt::*;
 
 /// A document in a novel or universe
 /// 
@@ -12,3 +12,14 @@ pub(crate) struct Document {
     word_count: usize,
     text: Vec<Paragraph>
 }
+
+impl Document {
+    /// Utility function to check if this chapter has a certain name
+    pub fn is_named(&self, name: &String) -> bool {
+        return *&self.name == *name;
+    }
+}
+
+
+// impl Display for Document {
+// }
