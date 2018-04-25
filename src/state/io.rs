@@ -1,8 +1,41 @@
 //! Serailisation specific structures
 
+use serde::{de::DeserializeOwned, ser::Serialize};
 use serde_json;
-use std::fs::File;
-use std::io::{Read, Write, Error as IoError};
+
+use std::io::{Error as IoError, Read, Write};
+use std::{fs::{File, OpenOptions},
+          path::Path};
+
+/// A common trait to attach to metadata types to make
+/// loading and unloading of their configurations easier
+pub trait MetadataStore<T: Storable>: Storable {
+
+    /// Returns a colletion that can then be used to load
+    /// associated files from disk
+    fn fetch(&self) -> Vec<T>;
+}
+
+pub trait Storable: Serialize + DeserializeOwned {
+    /// Load the metadata structure associated with a type
+    fn load(dir: &str, name: &str) -> Result<Self, IoError> {
+        let p = Path::new(dir).join(name);
+        let mut string = String::new();
+
+        let mut f = File::open(p)?;
+        f.read_to_string(&mut string)?;
+        return Ok(serde_json::from_str(&string)?);
+    }
+
+    /// Write this type to disk somewhere
+    fn save(&self, dir: &str, name: &str) -> Result<(), IoError> {
+        let p = Path::new(dir).join(name);
+        let mut file = OpenOptions::new().write(true).open(p)?;
+        file.write_all(serde_json::to_string(self)?.as_bytes())?;
+        return Ok(());
+    }
+
+}
 
 /// Represents the novel config on disk
 ///
@@ -49,9 +82,9 @@ impl NovelData {
         return match File::open(path) {
             Ok(ref mut f) => match f.get_string() {
                 Ok(c) => serde_json::from_str(&c).unwrap(),
-                Err(_) => None
+                Err(_) => None,
             },
-            _ => None
+            _ => None,
         };
     }
 }
@@ -64,9 +97,7 @@ impl UniverseData {
             Err(_) => return None,
         };
 
-        let me = UniverseData {
-            name, description
-        };
+        let me = UniverseData { name, description };
 
         f.write_all(serde_json::to_string(&me).unwrap().as_bytes())
             .unwrap();
@@ -78,9 +109,9 @@ impl UniverseData {
         return match File::open(path) {
             Ok(ref mut f) => match f.get_string() {
                 Ok(c) => serde_json::from_str(&c).unwrap(),
-                Err(_) => None
+                Err(_) => None,
             },
-            _ => None
+            _ => None,
         };
     }
 }
@@ -98,7 +129,7 @@ impl FileToString for File {
         let mut s = String::new();
         return match self.read_to_string(&mut s) {
             Ok(_) => Ok(s),
-            Err(e) => Err(e)
+            Err(e) => Err(e),
         };
     }
 }

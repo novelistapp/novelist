@@ -14,6 +14,15 @@ impl Paragraph {
     pub fn snippets(&mut self) -> &mut Vec<Sentence> {
         return &mut self.snippets;
     }
+
+    /// Utility to append a new sentence to this paragraph
+    pub fn append(&mut self) -> &mut Sentence {
+        self.snippets.push(Sentence {
+            snippets: Vec::new(),
+            terminator: ' '
+        });
+        return self.snippets.last_mut().unwrap();
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]

@@ -1,4 +1,5 @@
 use super::document::Document;
+use super::super::io::{Storable, MetadataStore};
 
 
 /// A chapter is a collection of scenes
@@ -28,5 +29,16 @@ impl Chapter {
             .iter_mut()
             .filter(|i| i.is_named(&name))
             .next();
+    }
+}
+
+
+/* Derive default store functions */
+impl Storable for Chapter {}
+
+/* Implement Document fetch manually */
+impl<T: Storable> MetadataStore<T> for Chapter {
+    fn fetch(&self) -> Vec<T> {
+        return Vec::new();
     }
 }

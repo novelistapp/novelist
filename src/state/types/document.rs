@@ -1,3 +1,4 @@
+use super::super::io::{Storable, MetadataStore};
 use super::text::{Paragraph, Sentence};
 
 /// A document in a novel or universe
@@ -45,3 +46,6 @@ impl Document {
             .last();
     }
 }
+
+/* Derive default store functions */
+impl Storable for Document {}
