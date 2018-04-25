@@ -19,7 +19,7 @@ impl Document {
     }
 
     /// Get the paragraph which contains the current cursor index.
-    pub fn get_paragraph_mut_indexed(&mut self, index: usize) -> Option<&mut Paragraph> {
+    pub fn get_paragraph(&mut self, index: usize) -> Option<&mut Paragraph> {
         let mut acc = 0;
         return self.text
             .iter_mut()
@@ -32,7 +32,7 @@ impl Document {
 
     /// Get the underlying sentence which contains the current
     /// cursor index.
-    pub fn get_sentence_mut_indexed(&mut self, index: usize) -> Option<&mut Sentence> {
+    pub fn get_sentence(&mut self, index: usize) -> Option<&mut Sentence> {
         let mut acc = 0;
         return self.text
             .iter_mut()
