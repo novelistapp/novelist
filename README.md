@@ -1,2 +1,3 @@
-# novelist
-A cool text editor for authors
+![](assets/novelist.png)
+
+An awesome text editor for authors.
