@@ -1,0 +1,41 @@
+services: docker
+language: rust
+sudo: required
+cache: cargo
+before_cache:
+- chmod -R a+r $HOME/.cargo
+
+branches:
+  only:
+  - "/^v\\d+\\.\\d+\\.\\d+.*$/"
+  - master
+  # - develop
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
+
+env:
+  global:
+  - CRATE_NAME=novelist
+
+matrix:
+  include:
+  - env: TARGET=armv7-unknown-linux-gnueabihf
+  - env: TARGET=i686-unknown-linux-gnu
+  - env: TARGET=x86_64-unknown-linux-gnu
+  - env: TARGET=x86_64-unknown-freebsd DISABLE_TESTS=1
+
+install:
+- sh ci/install.sh
+- source ~/.cargo/env || true
+
+script:
+- bash ci/script.sh
+
+after_script: set +e
+# before_deploy:
+# - sh ci/before_deploy.sh
+# after_deploy:
+# - sh ci/after_deploy.sh
