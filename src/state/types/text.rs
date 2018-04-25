@@ -1,6 +1,5 @@
 //! Text type handling module
 
-
 /// A complete text Paragraph that ends with a "." (normally)
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Paragraph {
@@ -10,22 +9,22 @@ pub struct Paragraph {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Sentence {
     snippets: Vec<TextSnippet>,
-    terminator: char
+    terminator: char,
 }
 
 /// A piece of text with a formatting style attached to it
-/// 
+///
 /// ## Example
-/// 
+///
 /// The simplest example would be
-/// 
+///
 /// ```norun
 /// TextSnippet::new("Just some Text", TextStyle::Plain);
 /// ```
-/// 
-/// A more complicated example would immediately boil down to a 
+///
+/// A more complicated example would immediately boil down to a
 /// list of textsnippets, to make up a sentence:
-/// 
+///
 /// ```norun
 /// let mut sentence = Vec::new();
 /// sentence.push(TextSnippet::new("Some", TextStyle::Plain));
@@ -38,6 +37,12 @@ pub struct TextSnippet {
     style: TextStyle,
 }
 
+impl TextSnippet {
+    pub fn new(text: String, style: TextStyle) -> Self {
+        return Self { text, style };
+    }
+}
+
 /// Describes a style of text
 #[derive(Debug, Serialize, Deserialize)]
 pub enum TextStyle {
@@ -48,5 +53,5 @@ pub enum TextStyle {
     /// Make it **bold**
     Bold,
     /// Make it _underline_
-    Underline
+    Underline,
 }
