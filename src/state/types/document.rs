@@ -1,4 +1,4 @@
-use super::text::Paragraph;
+use super::text::{Paragraph, Sentence};
 
 /// A document in a novel or universe
 ///
@@ -25,15 +25,23 @@ impl Document {
             .iter_mut()
             .take_while(|x| {
                 acc += x.wordcount();
-                acc <= 3
+                acc < index
             })
             .last();
     }
 
     /// Get the underlying sentence which contains the current
     /// cursor index.
-    pub fn get_sentence_mut_indexed(&mut self, index: usize) {}
+    pub fn get_sentence_mut_indexed(&mut self, index: usize) -> Option<&mut Sentence> {
+        let mut acc = 0;
+        return self.text
+            .iter_mut()
+            .map(|x| x.snippets())
+            .flat_map(|x| x.iter_mut())
+            .take_while(|x| {
+                acc += x.wordcount();
+                acc < index
+            })
+            .last();
+    }
 }
-
-// impl Display for Document {
-// }

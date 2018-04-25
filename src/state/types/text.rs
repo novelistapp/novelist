@@ -7,8 +7,12 @@ pub struct Paragraph {
 }
 
 impl Paragraph {
-    pub fn wordcount(&self) -> u64 {
-        5
+    pub fn wordcount(&self) -> usize {
+        return self.snippets.iter().map(|x| x.wordcount()).sum();
+    }
+
+    pub fn snippets(&mut self) -> &mut Vec<Sentence> {
+        return &mut self.snippets;
     }
 }
 
@@ -16,6 +20,12 @@ impl Paragraph {
 pub struct Sentence {
     snippets: Vec<TextSnippet>,
     terminator: char,
+}
+
+impl Sentence {
+    pub fn wordcount(&self) -> usize {
+        return self.snippets.iter().map(|x| x.wordcount()).sum();
+    }
 }
 
 /// A piece of text with a formatting style attached to it
@@ -46,6 +56,10 @@ pub struct TextSnippet {
 impl TextSnippet {
     pub fn new(text: String, style: TextStyle) -> Self {
         return Self { text, style };
+    }
+
+    pub fn wordcount(&self) -> usize {
+        return self.text.len();
     }
 }
 
