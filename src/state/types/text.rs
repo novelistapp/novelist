@@ -6,6 +6,12 @@ pub struct Paragraph {
     snippets: Vec<Sentence>,
 }
 
+impl Paragraph {
+    pub fn wordcount(&self) -> u64 {
+        5
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Sentence {
     snippets: Vec<TextSnippet>,
