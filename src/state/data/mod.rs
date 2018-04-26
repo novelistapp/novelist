@@ -12,8 +12,5 @@ pub(crate) use self::document::*;
 pub(crate) mod novel;
 pub(crate) use self::novel::*;
 
-pub(crate) mod text;
-pub(crate) use self::text::*;
-
 pub(crate) mod universe;
 pub(crate) use self::universe::*;

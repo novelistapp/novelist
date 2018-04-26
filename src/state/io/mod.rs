@@ -17,7 +17,7 @@ use std::{fs,
           path::{Path, PathBuf}};
 
 /// Type to wrap a generic `on_disk` type with a path
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct FileContainer<T: Storable> {
     pub path: String,
     pub on_disk: T,
@@ -65,6 +65,11 @@ pub fn create_scaffold(dir: &str, name: &str) -> Result<(), IoError> {
     fs::create_dir_all(&path.join("Universe").join("Templates"))?;
 
     Ok(())
+}
+
+pub fn create_dir<S: Into<String>>(path: S) -> Result<(), IoError> {
+    fs::create_dir(&path.into())?;
+    return Ok(());
 }
 
 /// A convenience function to append path segments

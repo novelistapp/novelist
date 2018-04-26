@@ -1,13 +1,14 @@
 use super::super::text::*;
+
 use super::traits::Storable;
 use std::io::Error as IoError;
 
 /// Describes a document on disk
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DocumentData {
-    name: String,
-    description: String,
-    text: Vec<Paragraph>,
+    pub name: String,
+    pub description: String,
+    pub text: Vec<Paragraph>,
 }
 
 /* Auto-implement store functions */

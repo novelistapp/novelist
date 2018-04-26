@@ -56,9 +56,9 @@ use state::data::Novel;
 
 fn main() {
     
-    // let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
-
-    let n = Novel::load("/home/spacekookie/Desktop/Starlike/Starlike.novel").unwrap();
+    // let mut n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
+    let mut n = Novel::load("/home/spacekookie/Desktop/Starlike/Starlike.novel").unwrap();
+    // n.add_chapter("Prologue", "Kicking off the story and such");
     println!("{:#?}", n);
 
     //Novel::create(".", "Starlike", "Katharina Ariane").unwrap();

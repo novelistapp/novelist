@@ -101,6 +101,19 @@ impl Novel {
         });
     }
 
+    pub fn add_chapter(&mut self, name: &str, descr: &str) {
+        let chapter = Chapter::create(
+            name.to_owned(),
+            descr.to_owned(),
+            &io::path_append(
+                &io::path_pop(&self.container.path, 1),
+                &["Novel", "Chapters"],
+            ),
+        ).unwrap();
+
+        self.chapters.push(chapter);
+    }
+
     /// Get a reference list of chapters
     pub fn get_chapters(&self) -> &Vec<Chapter> {
         return &self.chapters;
@@ -112,5 +125,15 @@ impl Novel {
             .iter_mut()
             .filter(|i| i.is_named(&name))
             .next();
+    }
+
+    /// Save this novel and all modified files to disk
+    pub fn save(&mut self) -> Result<(), IoError> {
+        self.chapters
+            .iter_mut()
+            .filter(|x| x.is_dirty())
+            .for_each(|x| x.save());
+
+        return Ok(());
     }
 }
