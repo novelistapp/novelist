@@ -2,15 +2,16 @@ use serde::{de::DeserializeOwned, ser::Serialize};
 use serde_json;
 
 use std::io::{Error as IoError, Read, Write};
-use std::{fs::{File, OpenOptions},
-          path::Path};
+use std::fs::{File, OpenOptions};
 
 /// A common trait to attach to metadata types to make
 /// loading and unloading of their configurations easier
 pub trait MetadataStore<T: Storable>: Storable {
     /// Returns a colletion that can then be used to load
     /// associated files from disk
-    fn fetch(&self) -> Vec<T>;
+    /// 
+    /// Takes a base path (as a directory)
+    fn fetch(&self, path: &str) -> Vec<T>;
 }
 
 /// Describes a storable/ serialisable object.

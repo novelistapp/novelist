@@ -1,5 +1,6 @@
-use super::super::io::NovelData;
+use super::super::io::{FileContainer, NovelData, Storable};
 use super::{Chapter, Universe};
+use std::io::Error as IoError;
 
 /// A novel project is a collection of chapters and other metadata
 pub(crate) struct Novel {
@@ -7,7 +8,8 @@ pub(crate) struct Novel {
     pub author: String,
     pub version: u8,
     chapters: Vec<Chapter>,
-    on_disk: NovelData,
+
+    container: FileContainer<NovelData>,
 
     external_universe: Option<Universe>,
     internal_universe: Universe,
@@ -18,18 +20,15 @@ impl Novel {
     ///
     /// Will return None if a novel of the same name already
     /// existed in the directory.
-    pub fn new(name: String, author: String, path: &str) -> Option<Self> {
-        let on_disk = match NovelData::create(name.clone(), author.clone(), path) {
-            Some(nd) => nd,
-            None => return None,
-        };
-
+    pub fn new(name: String, author: String, path: &str) -> Result<Self, IoError> {
+        let on_disk = NovelData::create(name.clone(), author.clone(), path)?;
         let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
+        let container = FileContainer::new(path, on_disk);
 
-        return Some(Self {
+        return Ok(Self {
             name,
             author,
-            on_disk,
+            container,
             internal_universe,
             external_universe: None,
             chapters: Vec::new(),
@@ -38,21 +37,23 @@ impl Novel {
     }
 
     /// Load an existing novel from disk
-    pub fn load(path: &str) -> Option<Self> {
-        let nd = match NovelData::load(path) {
-            Some(nd) => nd,
-            None => return None,
-        };
-
-        let on_disk = nd.clone();
-        let (name, author, version) = (nd.name, nd.author, nd.version);
-        let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
-
-        return Some(Self {
+    pub fn load(path: &str) -> Result<Self, IoError> {
+        let on_disk = NovelData::load(path)?;
+        let NovelData {
             name,
             author,
             version,
-            on_disk,
+            ..
+        } = on_disk.clone();
+
+        let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
+        let container = FileContainer::new(path, on_disk);
+
+        return Ok(Self {
+            name,
+            author,
+            version,
+            container,
             internal_universe,
             chapters: Vec::new(),
             external_universe: None,

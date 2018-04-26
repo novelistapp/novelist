@@ -2,6 +2,7 @@
 
 mod io;
 pub(crate) mod data;
+mod text;
 
 use self::data::Novel;
 

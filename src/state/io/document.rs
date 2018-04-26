@@ -4,7 +4,7 @@ use std::io::Error as IoError;
 
 /// Describes a document on disk
 #[derive(Serialize, Deserialize)]
-pub(crate) struct DocumentData {
+pub struct DocumentData {
     name: String,
     description: String,
     text: Vec<Paragraph>,
