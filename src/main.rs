@@ -56,7 +56,10 @@ use state::data::Novel;
 
 fn main() {
     
-    let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
+    // let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
+
+    let n = Novel::load("/home/spacekookie/Desktop/Starlike/Starlike.novel").unwrap();
+    println!("{:#?}", n);
 
     //Novel::create(".", "Starlike", "Katharina Ariane").unwrap();
 

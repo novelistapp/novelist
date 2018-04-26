@@ -3,7 +3,7 @@ use super::traits::Storable;
 use std::io::Error as IoError;
 
 /// Describes a document on disk
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct DocumentData {
     name: String,
     description: String,

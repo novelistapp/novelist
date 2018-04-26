@@ -17,6 +17,7 @@ use std::{fs,
           path::{Path, PathBuf}};
 
 /// Type to wrap a generic `on_disk` type with a path
+#[derive(Debug)]
 pub struct FileContainer<T: Storable> {
     pub path: String,
     pub on_disk: T,

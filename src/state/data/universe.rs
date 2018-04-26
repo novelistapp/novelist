@@ -3,6 +3,7 @@ use super::document::Document;
 use std::io::Error as IoError;
 
 /// A universe that has planning documents attached
+#[derive(Debug)]
 pub struct Universe {
     name: String,
     description: String,

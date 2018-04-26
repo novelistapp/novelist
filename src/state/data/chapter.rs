@@ -2,6 +2,7 @@ use super::document::Document;
 use super::super::io::chapter::ChapterData;
 
 /// A chapter is a collection of scenes
+#[derive(Debug)]
 pub(crate) struct Chapter {
     name: String,
     description: String,

@@ -3,6 +3,7 @@ use super::{Chapter, Universe};
 use std::io::Error as IoError;
 
 /// A novel project is a collection of chapters and other metadata
+#[derive(Debug)]
 pub(crate) struct Novel {
     pub name: String,
     pub author: String,

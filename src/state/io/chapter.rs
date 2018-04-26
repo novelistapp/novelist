@@ -1,6 +1,5 @@
 use super::traits::*;
 use std::io::Error as IoError;
-use std::path::Path;
 
 
 /// Metadata file for a chapter
