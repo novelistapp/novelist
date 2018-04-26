@@ -3,7 +3,7 @@
 mod io;
 pub(crate) mod types;
 
-use types::Novel;
+use self::types::Novel;
 
 /// A list of global, app-level errors
 ///
@@ -30,7 +30,7 @@ impl AppState {
         return match self.active_novel {
             Some(_) => Err(AppErrors::OpenProject),
             None => {
-                self.active_novel = n;
+                self.active_novel = Some(n);
                 Ok(())
             }
         };
