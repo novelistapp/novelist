@@ -21,7 +21,7 @@ impl NovelData {
 
     /// Create a new novel metadata file
     pub fn create(name: String, author: String, dir: &str) -> Result<Self, IoError> {
-        let p = Path::new(dir).join(&name);
+        let p = Path::new(dir).join(&format!("{}.novel", &name));
         return Ok(NovelData {
             name,
             author,

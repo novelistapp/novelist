@@ -34,9 +34,21 @@ impl Novel {
         /* Scaffold the directory structure */
         io::create_scaffold(directory, &name)?;
 
-        let on_disk = NovelData::create(name.clone(), author.clone(), directory)?;
-        let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
-        let container = FileContainer::new(directory, on_disk);
+        /* Shift the base directory to make working more easily */
+        let base = io::path_append(directory, &[&name]);
+
+        /* Create a new empty Universe */
+        let internal_universe = Universe::new(
+            name.clone(),
+            String::from("Default Universe for your story"),
+            &io::path_append(&base, &["Universe"]),
+        )?;
+
+        /* Store novel metadat file in a wrapper */
+        let container = FileContainer::new(
+            &base,
+            NovelData::create(name.clone(), author.clone(), &base)?,
+        );
 
         return Ok(Self {
             name,
@@ -61,6 +73,8 @@ impl Novel {
     /// ``'
     pub fn load(path: &str) -> Result<Self, IoError> {
         let on_disk = NovelData::load(path)?;
+        let base = io::path_pop(path, 1);
+
         let NovelData {
             name,
             author,
@@ -68,7 +82,11 @@ impl Novel {
             ..
         } = on_disk.clone();
 
-        let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
+        let internal_universe = Universe::new(
+            name.clone(),
+            String::from("Default Universe for your story"),
+            &io::path_append(&base, &["Universe"]),
+        )?;
         let container = FileContainer::new(path, on_disk);
 
         return Ok(Self {

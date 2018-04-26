@@ -56,7 +56,7 @@ use state::data::Novel;
 
 fn main() {
     
-    let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/");
+    let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
 
     //Novel::create(".", "Starlike", "Katharina Ariane").unwrap();
 

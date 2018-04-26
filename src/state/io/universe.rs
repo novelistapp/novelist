@@ -17,7 +17,7 @@ impl Storable for UniverseData {}
 impl UniverseData {
     /// Create a new novel metadata file on disk
     pub fn create(name: String, description: String, dir: &str) -> Result<Self, IoError> {
-        let path = Path::new(dir).join(&name);
+        let path = Path::new(dir).join(&format!("{}.universe", &name));
         return Ok(UniverseData { name, description }.create(path.to_str().unwrap())?);
     }
 }

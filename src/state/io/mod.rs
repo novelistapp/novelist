@@ -13,7 +13,8 @@ pub use self::traits::Storable;
 pub use self::universe::UniverseData;
 
 use std::io::{Error as IoError, ErrorKind};
-use std::{fs, path::Path};
+use std::{fs,
+          path::{Path, PathBuf}};
 
 /// Type to wrap a generic `on_disk` type with a path
 pub struct FileContainer<T: Storable> {
@@ -45,12 +46,12 @@ impl<T: Storable> FileContainer<T> {
 ///       - `{name}.universe`
 ///       - assets/
 ///     - Universe (Linked) – Left empty initially
-/// 
+///
 /// ## Future improvements
-/// 
+///
 /// - This function should be able to selectively "repair" novels
 /// - Have a seperate function to easily initialise Universes
-/// - 
+/// -
 pub fn create_scaffold(dir: &str, name: &str) -> Result<(), IoError> {
     let path = Path::new(dir).join(name);
     if path.exists() {
@@ -63,4 +64,24 @@ pub fn create_scaffold(dir: &str, name: &str) -> Result<(), IoError> {
     fs::create_dir_all(&path.join("Universe").join("Templates"))?;
 
     Ok(())
+}
+
+/// A convenience function to append path segments
+pub fn path_append(base: &str, join: &[&str]) -> String {
+    let mut path = PathBuf::new();
+    path.push(base);
+    join.iter().for_each(|x| path.push(x));
+    return String::from(path.to_str().unwrap());
+}
+
+/// A convenience function to pop items from a path segment
+pub fn path_pop(base: &str, levels: u64) -> String {
+    let mut path = PathBuf::new();
+    path.push(base);
+
+    [0..levels].iter().for_each(|_| {
+        path.pop();
+    });
+
+    return String::from(path.to_str().unwrap());
 }
