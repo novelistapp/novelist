@@ -1,9 +1,9 @@
 //! All the models used in Novelist
 
 mod io;
-pub(crate) mod types;
+pub(crate) mod data;
 
-use self::types::Novel;
+use self::data::Novel;
 
 /// A list of global, app-level errors
 ///

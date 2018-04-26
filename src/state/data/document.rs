@@ -1,4 +1,4 @@
-use super::super::io::{Storable, MetadataStore};
+use super::super::io::traits::Storable;
 use super::text::{Paragraph, Sentence};
 
 /// A document in a novel or universe
