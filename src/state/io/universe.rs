@@ -1,5 +1,6 @@
 use super::traits::*;
 use std::io::Error as IoError;
+use std::path::Path;
 
 /// Represents the universe config on disk
 ///
@@ -15,7 +16,8 @@ impl Storable for UniverseData {}
 
 impl UniverseData {
     /// Create a new novel metadata file on disk
-    pub fn create(name: String, description: String, path: &str) -> Result<Self, IoError> {
-        return Ok(UniverseData { name, description }.create(path)?);
+    pub fn create(name: String, description: String, dir: &str) -> Result<Self, IoError> {
+        let path = Path::new(dir).join(&name);
+        return Ok(UniverseData { name, description }.create(path.to_str().unwrap())?);
     }
 }

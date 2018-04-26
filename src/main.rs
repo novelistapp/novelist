@@ -52,20 +52,25 @@ pub fn build_ui(application: &gtk::Application) {
     window.show_all();
 }
 
+use state::data::Novel;
+
 fn main() {
+    
+    let n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/");
+
     //Novel::create(".", "Starlike", "Katharina Ariane").unwrap();
 
-    if gtk::init().is_err() {
-        println!("Failed to initialize GTK.");
-        return;
-    }
-    let application =  
-        gtk::Application::new("org.novelist", gio::ApplicationFlags::empty())
-            .expect("Initialization failed...");
+    // if gtk::init().is_err() {
+    //     println!("Failed to initialize GTK.");
+    //     return;
+    // }
+    // let application =  
+    //     gtk::Application::new("org.novelist", gio::ApplicationFlags::empty())
+    //         .expect("Initialization failed...");
 
-    application.connect_startup(move |app| { build_ui(app); });
-    application.connect_activate(|_| {});
+    // application.connect_startup(move |app| { build_ui(app); });
+    // application.connect_activate(|_| {});
 
-    /* Run our app */
-    application.run(&args().collect::<Vec<_>>());
+    // /* Run our app */
+    // application.run(&args().collect::<Vec<_>>());
 }

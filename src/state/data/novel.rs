@@ -1,4 +1,4 @@
-use super::super::io::{FileContainer, NovelData, Storable};
+use super::super::io::{self, FileContainer, NovelData, Storable};
 use super::{Chapter, Universe};
 use std::io::Error as IoError;
 
@@ -16,14 +16,27 @@ pub(crate) struct Novel {
 }
 
 impl Novel {
-    /// Try to create a new novel with a path.
+    /// Create a new novel in memory and on disk
     ///
-    /// Will return None if a novel of the same name already
-    /// existed in the directory.
-    pub fn new(name: String, author: String, path: &str) -> Result<Self, IoError> {
-        let on_disk = NovelData::create(name.clone(), author.clone(), path)?;
+    /// The `directory` parameter refers to the **containing** directory,
+    /// not the novel directory itself.
+    ///
+    /// This is persistent across the novel-file API, unless otherwise stated.
+    ///
+    /// **All joining of `<directory>/<name>` is done internally!**
+    ///
+    /// # Example
+    ///
+    /// ```norun
+    /// Novel::new("Game of Thrones", "George RR Martin", "/home/george/books/");
+    /// ```
+    pub fn new(name: String, author: String, directory: &str) -> Result<Self, IoError> {
+        /* Scaffold the directory structure */
+        io::create_scaffold(directory, &name)?;
+
+        let on_disk = NovelData::create(name.clone(), author.clone(), directory)?;
         let internal_universe = Universe::new(name.clone(), "Default Universe for your story");
-        let container = FileContainer::new(path, on_disk);
+        let container = FileContainer::new(directory, on_disk);
 
         return Ok(Self {
             name,
@@ -36,7 +49,16 @@ impl Novel {
         });
     }
 
-    /// Load an existing novel from disk
+    /// Load an existing novel from disk.
+    ///
+    /// The `path` parameter in this case is the absolute path to
+    /// the `.novel` index file.
+    ///
+    /// # Example
+    ///
+    /// ```norun
+    /// Novel::load("/home/george/books/Where Everybody Dies/Where Everybody Dies.novel");
+    /// ``'
     pub fn load(path: &str) -> Result<Self, IoError> {
         let on_disk = NovelData::load(path)?;
         let NovelData {

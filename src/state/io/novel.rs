@@ -20,14 +20,13 @@ impl Storable for NovelData {}
 impl NovelData {
 
     /// Create a new novel metadata file
-    pub fn create(name: String, author: String, path: &str) -> Result<Self, IoError> {
-        let p = Path::new(path);
-
+    pub fn create(name: String, author: String, dir: &str) -> Result<Self, IoError> {
+        let p = Path::new(dir).join(&name);
         return Ok(NovelData {
             name,
             author,
             version: 0,
             external_universe: None,
-        }.create(path)?);
+        }.create(p.to_str().unwrap())?);
     }
 }
