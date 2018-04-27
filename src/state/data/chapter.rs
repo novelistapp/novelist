@@ -1,5 +1,5 @@
-use super::super::io::{self, chapter::ChapterData, FileContainer};
-use super::document::Document;
+use super::super::io::{self, chapter::ChapterData, FileContainer, DocumentData};
+use super::document::{Document};
 use std::io::Error as IoError;
 
 /// A chapter is a collection of scenes
@@ -52,11 +52,56 @@ impl Chapter {
         return self.scenes.iter_mut().filter(|i| i.is_named(&name)).next();
     }
 
-    pub fn save(&mut self) -> Result<(), IoError> {
-        return self.scenes
+    pub fn save(&mut self) -> Result<(), Vec<IoError>> {
+        self.scenes
             .iter_mut()
             .filter(|x| x.is_dirty())
-            .for_each(|x| x.save()?)
-            .collect();
+            .map(|x| x.save())
+            .fold_errs()
     }
 }
+
+trait InteratorResultExt<E>: Iterator + Sized {
+    fn fold_errs(self) -> Result<(), Vec<E>>;
+}
+
+impl<I, E> InteratorResultExt<E> for I where I: Iterator<Item=Result<(), E>> {
+    fn fold_errs(self) -> Result<(), Vec<E>> {
+        self.fold(Ok(()), |acc, x| {
+            match (acc, x) {
+                (Ok(_), Err(e)) => Err(vec![e]),
+                (Err(mut es), Err(e)) => { es.push(e); Err(es) },
+                (x, _) => x,
+            }
+        })
+    }
+}
+
+// #[test]
+// fn foo() {
+//     let c = Chapter {
+//         name: "fo".into(),
+//         description: "bar".into(),
+//         scenes: vec![Document {
+//             name: "foo".into(),
+//             description: "foo".into(),
+//             word_count: 42,
+//             text: vec![],
+//             on_disk: FileContainer::new("llll", DocumentData {
+//                 name: "foo".into(),
+//                 description: "foo".into(),
+//                 text: vec![],
+//             }),
+//             dirty: false,
+//         }],
+//         word_count: 42,
+//         on_disk: FileContainer::new("llll", ChapterData {
+//                 name: "foo".into(),
+//                 description: "foo".into(),
+//                 scenes: vec![],
+//             }),
+//         dirty: true,
+//     };
+
+//     c.save().unwrap();
+// }
