@@ -1,6 +1,8 @@
 use super::super::io::{self, FileContainer, NovelData, Storable};
 use super::{Chapter, Universe};
+
 use std::io::Error as IoError;
+use utils::InteratorResultExt;
 
 /// A novel project is a collection of chapters and other metadata
 #[derive(Debug)]
@@ -102,16 +104,13 @@ impl Novel {
     }
 
     pub fn add_chapter(&mut self, name: &str, descr: &str) {
-        // self.chapters.push(
-        //     ,
-        // );
-        let f = Chapter::create(
-            name.to_owned(),
-            descr.to_owned(),
-            &io::path_append(&self.container.path, &["Novel", "Chapters"]),
-        ).unwrap()
-            .save();
-        println!("Result: {:#?}", f);
+        self.chapters.push(
+            Chapter::create(
+                name.to_owned(),
+                descr.to_owned(),
+                &io::path_append(&self.container.path, &["Novel", "Chapters"]),
+            ).unwrap(),
+        );
     }
 
     /// Get a reference list of chapters
@@ -128,14 +127,16 @@ impl Novel {
     }
 
     /// Save this novel and all modified files to disk
-    pub fn save(&mut self) -> Result<(), IoError> {
-        self.chapters
+    pub fn save(&mut self) -> Result<(), Vec<IoError>> {
+        if let Err(es) = self.chapters
             .iter_mut()
             .filter(|x| x.is_dirty())
-            .for_each(|x| {
-                x.save();
-            });
-
-        return Ok(());
+            .map(|x| x.save())
+            .fold_errs()
+        {
+            return Err(es.into_iter().flatten().collect());
+        } else {
+            Ok(())
+        }
     }
 }

@@ -16,6 +16,7 @@ pub(crate) struct Chapter {
 }
 
 impl Chapter {
+
     /// Create a new chapter metadata file and folder
     pub fn create(name: String, description: String, dir: &str) -> Result<Chapter, IoError> {
         let on_disk = FileContainer::new(
@@ -55,7 +56,6 @@ impl Chapter {
     }
 
     pub fn save(&mut self) -> Result<(), Vec<IoError>> {
-        println!("Saving Chapter");
         self.scenes
             .iter_mut()
             .filter(|x| x.is_dirty())

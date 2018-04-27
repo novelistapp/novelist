@@ -1,3 +1,5 @@
+#![feature(iterator_flatten)]
+
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
