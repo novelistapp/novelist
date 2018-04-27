@@ -1,5 +1,6 @@
 use super::super::io::{traits::Storable, DocumentData, FileContainer};
 use state::text::{Paragraph, Sentence};
+use std::io::Error as IoError;
 
 /// A document in a novel or universe
 ///
@@ -54,12 +55,10 @@ impl Document {
     }
 
     /// Write down a document to disk
-    pub fn save(&mut self) {
+    pub fn save(&mut self) -> Result<(), IoError> {
         let cpy: DocumentData = self.clone().into();
-        match cpy.save(&self.on_disk.path) {
-            Err(_) => eprintln!("Failed to save file!"),
-            _ => {}
-        }
+        cpy.save(&self.on_disk.path)?;
+        return Ok(());
     }
 }
 

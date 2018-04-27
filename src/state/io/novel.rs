@@ -12,6 +12,7 @@ pub struct NovelData {
     pub author: String,
     pub version: u8,
     pub external_universe: Option<String>,
+    pub chapters: Vec<String>,
 }
 
 /// Auto-implements Storable
@@ -27,6 +28,7 @@ impl NovelData {
             author,
             version: 0,
             external_universe: None,
+            chapters: Vec::new(),
         }.create(p.to_str().unwrap())?);
     }
 }

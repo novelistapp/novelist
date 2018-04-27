@@ -1,4 +1,4 @@
-use super::super::io::{self, chapter::ChapterData};
+use super::super::io::{self, chapter::ChapterData, FileContainer};
 use super::document::Document;
 use std::io::Error as IoError;
 
@@ -9,22 +9,26 @@ pub(crate) struct Chapter {
     description: String,
     scenes: Vec<Document>,
     word_count: usize,
-    on_disk: ChapterData,
+    on_disk: FileContainer<ChapterData>,
     dirty: bool,
 }
 
 impl Chapter {
     /// Create a new chapter metadata file and folder
     pub fn create(name: String, description: String, dir: &str) -> Result<Chapter, IoError> {
-        let cd = ChapterData::create(name.clone(), description.clone(), dir)?;
-        io::create_dir(io::path_append(dir, &[&format!("{}", name)]))?;
+        let on_disk = FileContainer::new(
+            dir,
+            ChapterData::create(name.clone(), description.clone(), dir)?,
+        );
+        let path = io::path_append(dir, &[&format!("{}", name)]);
+        io::create_dir(path)?;
 
         return Ok(Chapter {
             name,
             description,
             scenes: Vec::new(),
             word_count: 0,
-            on_disk: cd,
+            on_disk,
             dirty: false,
         });
     }
@@ -48,10 +52,11 @@ impl Chapter {
         return self.scenes.iter_mut().filter(|i| i.is_named(&name)).next();
     }
 
-    pub fn save(&mut self) {
-        self.scenes
+    pub fn save(&mut self) -> Result<(), IoError> {
+        return self.scenes
             .iter_mut()
             .filter(|x| x.is_dirty())
-            .for_each(|x| x.save());
+            .for_each(|x| x.save()?)
+            .collect();
     }
 }
