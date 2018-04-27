@@ -1,6 +1,8 @@
 use super::super::text::*;
 
 use super::traits::Storable;
+use super::super::io;
+
 use std::io::Error as IoError;
 
 /// Describes a document on disk
@@ -18,9 +20,9 @@ impl DocumentData {
     /// Create a new novel metadata file on disk
     pub fn create(name: String, description: String, path: &str) -> Result<Self, IoError> {
         return Ok(DocumentData {
-            name,
+            name: name.clone(),
             description,
             text: Vec::new(),
-        }.create(path)?);
+        }.create(&io::path_append(path, &[&format!("{}.scene", &name)]))?);
     }
 }

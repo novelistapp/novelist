@@ -7,12 +7,16 @@ pub struct Paragraph {
 }
 
 impl Paragraph {
+    pub fn new() -> Paragraph {
+        Paragraph { snippets: Vec::new() }
+    }
+
     pub fn wordcount(&self) -> usize {
-        return self.snippets.iter().map(|x| x.wordcount()).sum();
+        self.snippets.iter().map(|x| x.wordcount()).sum()
     }
 
     pub fn snippets(&mut self) -> &mut Vec<Sentence> {
-        return &mut self.snippets;
+        &mut self.snippets
     }
 
     /// Utility to append a new sentence to this paragraph
@@ -21,7 +25,7 @@ impl Paragraph {
             snippets: Vec::new(),
             terminator: ' ',
         });
-        return self.snippets.last_mut().unwrap();
+        self.snippets.last_mut().unwrap()
     }
 }
 
@@ -33,7 +37,11 @@ pub struct Sentence {
 
 impl Sentence {
     pub fn wordcount(&self) -> usize {
-        return self.snippets.iter().map(|x| x.wordcount()).sum();
+        self.snippets.iter().map(|x| x.wordcount()).sum()
+    }
+
+    pub fn push_text(&mut self, text: &str, style: TextStyle) {
+        self.snippets.push(TextSnippet { text: text.to_string(), style });
     }
 }
 
@@ -64,11 +72,11 @@ pub struct TextSnippet {
 
 impl TextSnippet {
     pub fn new(text: String, style: TextStyle) -> Self {
-        return Self { text, style };
+        Self { text, style }
     }
 
     pub fn wordcount(&self) -> usize {
-        return self.text.len();
+        self.text.len()
     }
 }
 

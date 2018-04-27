@@ -1,4 +1,5 @@
-use super::super::io::{self, FileContainer, NovelData, Storable};
+use super::super::io::{self, traits::MetadataStore, ChapterData, FileContainer, NovelData,
+                       Storable};
 use super::{Chapter, Universe};
 
 use std::io::Error as IoError;
@@ -75,8 +76,21 @@ impl Novel {
     /// Novel::load("/home/george/books/Where Everybody Dies/Where Everybody Dies.novel");
     /// ``'
     pub fn load(path: &str) -> Result<Self, IoError> {
+        /* Load metadata file and fix path offset */
         let on_disk = NovelData::load(path)?;
         let base = io::path_pop(path, 1);
+
+        /* Load all chapters we know of */
+        let chapters: Vec<Chapter> = on_disk
+            .pull(&base)?
+            .into_iter()
+            .filter_map(|d: ChapterData| {
+                Chapter::load(
+                    d.clone(),
+                    &io::path_append(&base, &["Novel", "Chapters", &d.name]),
+                ).ok()
+            })
+            .collect();
 
         let NovelData {
             name,
@@ -98,12 +112,12 @@ impl Novel {
             version,
             container,
             internal_universe,
-            chapters: Vec::new(),
+            chapters,
             external_universe: None,
         });
     }
 
-    pub fn add_chapter(&mut self, name: &str, descr: &str) {
+    pub fn add_chapter(&mut self, name: &str, descr: &str) -> &mut Chapter {
         self.chapters.push(
             Chapter::create(
                 name.to_owned(),
@@ -111,6 +125,8 @@ impl Novel {
                 &io::path_append(&self.container.path, &["Novel", "Chapters"]),
             ).unwrap(),
         );
+
+        self.chapters.last_mut().unwrap()
     }
 
     /// Get a reference list of chapters

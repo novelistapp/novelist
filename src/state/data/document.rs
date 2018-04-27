@@ -1,5 +1,5 @@
-use super::super::io::{traits::Storable, DocumentData, FileContainer};
-use state::text::{Paragraph, Sentence};
+use super::super::io::{self, traits::Storable, DocumentData, FileContainer};
+use state::text::{Paragraph, Sentence, TextStyle};
 use std::io::Error as IoError;
 
 /// A document in a novel or universe
@@ -17,6 +17,35 @@ pub(crate) struct Document {
 }
 
 impl Document {
+    /// Create a new chapter metadata file and folder
+    pub fn create(name: String, description: String, dir: &str) -> Result<Self, IoError> {
+        let on_disk = FileContainer::new(
+            dir,
+            DocumentData::create(name.clone(), description.clone(), dir)?,
+        );
+
+        return Ok(Self {
+            name,
+            description,
+            word_count: 0,
+            text: Vec::new(),
+            on_disk,
+            dirty: false,
+        });
+    }
+
+    pub fn load(data: DocumentData, base: &str) -> Self {
+        let c = data.clone();
+        Self {
+            name: c.name,
+            description: c.description,
+            word_count: 0,
+            text: c.text,
+            on_disk: FileContainer::new(base, data),
+            dirty: false,
+        }
+    }
+
     /// Utility function to check if this chapter has a certain name
     pub fn is_named(&self, name: &String) -> bool {
         return *&self.name == *name;
@@ -54,10 +83,26 @@ impl Document {
             .last();
     }
 
+    /// Append a string into the latest paragraph
+    ///
+    /// FOR TESTING ONLY PLEASE
+    pub fn append(&mut self, word: &str) {
+        self.text.push(Paragraph::new());
+        self.text
+            .last_mut()
+            .unwrap()
+            .append()
+            .push_text(word, TextStyle::Plain);
+        self.dirty = true;
+    }
+
     /// Write down a document to disk
     pub fn save(&mut self) -> Result<(), IoError> {
         let cpy: DocumentData = self.clone().into();
-        cpy.save(&self.on_disk.path)?;
+        cpy.save(&io::path_append(
+            &self.on_disk.path,
+            &[&format!("{}.scene", &self.name)],
+        ))?;
         return Ok(());
     }
 }

@@ -1,7 +1,11 @@
-
+use super::chapter::ChapterData;
+use super::path_append;
 use super::traits::*;
-use std::io::Error as IoError;
-use std::{fs, path::Path};
+
+use std::fmt::Debug;
+use std::io::{Error as IoError, Read};
+use std::{fs::{self, File},
+          path::Path};
 
 /// Represents the novel config on disk
 ///
@@ -18,8 +22,15 @@ pub struct NovelData {
 /// Auto-implements Storable
 impl Storable for NovelData {}
 
-impl NovelData {
+/// MetadataStore is used to pull chilf-metadata objects in
+impl<T: Storable> MetadataStore<T> for NovelData {
+    fn pull(&self, base: &str) -> Result<Vec<T>, IoError> {
+        let paths = self.fetch(&path_append(&base, &["Novel", "Chapters"]), "chapter")?;
+        Ok(paths.into_iter().filter_map(|p| T::load(&p).ok()).collect())
+    }
+}
 
+impl NovelData {
     /// Create a new novel metadata file
     pub fn create(name: String, author: String, dir: &str) -> Result<Self, IoError> {
         let p = Path::new(dir).join(&format!("{}.novel", &name));
@@ -30,5 +41,11 @@ impl NovelData {
             external_universe: None,
             chapters: Vec::new(),
         }.create(p.to_str().unwrap())?);
+    }
+}
+
+impl Indexable for NovelData {
+    fn index(&self) -> Vec<String> {
+        self.chapters.clone()
     }
 }

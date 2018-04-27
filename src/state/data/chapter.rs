@@ -1,5 +1,6 @@
-use super::super::io::{self, chapter::ChapterData, FileContainer, DocumentData};
-use super::document::{Document};
+use super::super::io::traits::MetadataStore;
+use super::super::io::{self, chapter::ChapterData, DocumentData, FileContainer};
+use super::document::Document;
 use utils::InteratorResultExt;
 
 use std::io::Error as IoError;
@@ -16,7 +17,6 @@ pub(crate) struct Chapter {
 }
 
 impl Chapter {
-
     /// Create a new chapter metadata file and folder
     pub fn create(name: String, description: String, dir: &str) -> Result<Chapter, IoError> {
         let on_disk = FileContainer::new(
@@ -34,6 +34,40 @@ impl Chapter {
             on_disk,
             dirty: false,
         });
+    }
+
+    /// Load a chapter from an existing ChapterData object
+    pub fn load(data: ChapterData, base: &str) -> Result<Self, IoError> {
+        let ChapterData {
+            name, description, ..
+        } = data.clone();
+
+        /* Pull in all documents */
+        let docs: Vec<Document> = data.pull(&base)?
+            .into_iter()
+            .map(|dd| Document::load(dd, base))
+            .collect();
+
+        Ok(Self {
+            name,
+            description,
+            scenes: docs,
+            word_count: 0,
+            on_disk: FileContainer::new("", data),
+            dirty: false,
+        })
+    }
+
+    pub fn add_scene(&mut self, name: String, descr: String) -> &mut Document{
+        self.scenes.push(
+            Document::create(
+                name,
+                descr,
+                &io::path_append(&self.on_disk.path, &[&self.name]),
+            ).unwrap(),
+        );
+        self.dirty = true;
+        self.scenes.last_mut().unwrap()
     }
 
     /// Utility function to check if this chapter has a certain name
