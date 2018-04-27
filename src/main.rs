@@ -8,18 +8,18 @@ extern crate gtk;
 
 use std::env::args;
 use gio::ApplicationExtManual;
-use gio::ApplicationExt;
 
+mod utils;
+mod state;
 pub mod gui;
 
-mod state;
-
+use state::data::Novel;
 
 fn main() {
-    // let mut n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
+    let mut n = Novel::new(String::from("Starlike"), String::from("Katharina Ariane"), "/home/spacekookie/Desktop").unwrap();
     //let mut n = Novel::load("/home/spacekookie/Desktop/Starlike/Starlike.novel").unwrap();
-    // n.add_chapter("Prologue", "Kicking off the story and such");
-    //println!("{:#?}", n);
+    n.add_chapter("Prologue", "Kicking off the story and such");
+    println!("{:#?}", n);
 
     //Novel::create(".", "Starlike", "Katharina Ariane").unwrap();
 

@@ -1,5 +1,7 @@
 use super::super::io::{self, chapter::ChapterData, FileContainer, DocumentData};
 use super::document::{Document};
+use utils::InteratorResultExt;
+
 use std::io::Error as IoError;
 
 /// A chapter is a collection of scenes
@@ -53,6 +55,7 @@ impl Chapter {
     }
 
     pub fn save(&mut self) -> Result<(), Vec<IoError>> {
+        println!("Saving Chapter");
         self.scenes
             .iter_mut()
             .filter(|x| x.is_dirty())
@@ -61,22 +64,7 @@ impl Chapter {
     }
 }
 
-trait InteratorResultExt<E>: Iterator + Sized {
-    fn fold_errs(self) -> Result<(), Vec<E>>;
-}
-
-impl<I, E> InteratorResultExt<E> for I where I: Iterator<Item=Result<(), E>> {
-    fn fold_errs(self) -> Result<(), Vec<E>> {
-        self.fold(Ok(()), |acc, x| {
-            match (acc, x) {
-                (Ok(_), Err(e)) => Err(vec![e]),
-                (Err(mut es), Err(e)) => { es.push(e); Err(es) },
-                (x, _) => x,
-            }
-        })
-    }
-}
-
+// I hear you Pascal...I hear you :/
 // #[test]
 // fn foo() {
 //     let c = Chapter {

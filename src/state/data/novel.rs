@@ -102,13 +102,16 @@ impl Novel {
     }
 
     pub fn add_chapter(&mut self, name: &str, descr: &str) {
-        self.chapters.push(
-            Chapter::create(
-                name.to_owned(),
-                descr.to_owned(),
-                &io::path_append(&self.container.path, &["Novel", "Chapters"]),
-            ).unwrap(),
-        );
+        // self.chapters.push(
+        //     ,
+        // );
+        let f = Chapter::create(
+            name.to_owned(),
+            descr.to_owned(),
+            &io::path_append(&self.container.path, &["Novel", "Chapters"]),
+        ).unwrap()
+            .save();
+        println!("Result: {:#?}", f);
     }
 
     /// Get a reference list of chapters
