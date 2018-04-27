@@ -1,7 +1,7 @@
 extern crate gio;
 extern crate gtk;
 
-use gtk::{ApplicationWindow, Builder, Dialog, MenuItem, MenuItemExt};
+use gtk::{ApplicationWindow, Builder, AboutDialog, MenuItem, MenuItemExt};
 use gio::prelude::*;
 use gtk::prelude::*;
 
@@ -47,7 +47,11 @@ pub fn build_main(application: &gtk::Application) {
     let window: ApplicationWindow = builder
         .get_object("mainwindow")
         .expect("Couldn't get Window");
-    let about: Dialog = builder.get_object("uber").expect("Couldn't get Window");
+    let about: AboutDialog = builder.get_object("uber").expect("Couldn't get Window");
+
+    let authors: Vec<&str> = env!("CARGO_PKG_AUTHORS").split(":").map(AsRef::as_ref).collect();
+    about.set_authors(&authors);
+    about.set_version(env!("CARGO_PKG_VERSION"));
 
     window.set_application(application);
     window.connect_delete_event(clone!(window => move |_, _| {
