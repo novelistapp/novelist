@@ -4,6 +4,8 @@ use serde_json;
 use std::fs::{self, File, OpenOptions};
 use std::io::{Error as IoError, Read, Write};
 
+use rayon::prelude::*;
+
 /// A simple trait a metadata object can implement
 /// to gain the ability to be indexable
 pub trait Indexable {
@@ -53,7 +55,7 @@ pub trait Storable: Serialize + DeserializeOwned {
     /// Load the metadata structure associated with a type
     fn load(path: &str) -> Result<Self, IoError> {
         let mut string = String::new();
-        println!("Attempting to load: '{}'", path);
+        
         let mut f = OpenOptions::new().read(true).open(path)?;
         f.read_to_string(&mut string)?;
         return Ok(serde_json::from_str(&string)?);

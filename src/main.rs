@@ -11,6 +11,8 @@ extern crate serde;
 extern crate serde_derive;
 extern crate serde_json;
 
+extern crate rayon;
+
 extern crate gio;
 extern crate gtk;
 
@@ -24,24 +26,6 @@ mod utils;
 use state::data::{Chapter, Document, Novel};
 
 fn main() {
-    let mut n = Novel::new(
-        String::from("Starlike"),
-        String::from("Katharina Ariane"),
-        "/home/spacekookie/Desktop",
-    ).unwrap();
-    n.add_chapter("Prologue", "Kicking off the story and such")
-        .add_scene("Prologue".to_owned(), "The story starts...".to_owned())
-        .append(
-            "It was a warm summer day. BLa bla bla bla bla bla bla \
-             MOre text omg this is all one fucking god damn text snippet because \
-             FUCK THIS FUCKING BULLSHIT AAAAAAAAAAAAH!!!!",
-        );
-
-    n.save().unwrap();
-
-    // let mut n = Novel::load("/home/spacekookie/Desktop/Starlike/Starlike.novel").unwrap();
-    // println!("{:#?}", n);
-
     if gtk::init().is_err() {
         println!("Failed to initialize GTK.");
         return;

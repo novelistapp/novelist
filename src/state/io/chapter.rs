@@ -1,6 +1,8 @@
 use super::super::io;
 use super::document::DocumentData;
 
+use rayon::prelude::*;
+
 use super::traits::*;
 use std::fmt::Debug;
 use std::io::Error as IoError;
@@ -10,7 +12,7 @@ use std::io::Error as IoError;
 pub struct ChapterData {
     pub name: String,
     pub description: String,
-    scenes: Vec<String>,
+    pub scenes: Vec<String>,
 }
 
 impl ChapterData {
@@ -32,13 +34,13 @@ impl ChapterData {
 impl Storable for ChapterData {}
 
 /// MetadataStore is used to pull child-metadata objects in
-impl<T: Storable> MetadataStore<T> for ChapterData {
+impl<T: Storable + Send> MetadataStore<T> for ChapterData {
     fn pull(&self, base: &str) -> Result<Vec<T>, IoError> {
-        let paths = self.fetch(
-            &io::path_append(&base, &["Novel", "Chapters", self.name()]),
-            "scene",
-        )?;
-        Ok(paths.into_iter().filter_map(|p| T::load(&p).ok()).collect())
+        let paths = self.fetch(&base, "scene")?;
+        Ok(paths
+            .into_par_iter()
+            .filter_map(|p| T::load(&p).ok())
+            .collect())
     }
 }
 

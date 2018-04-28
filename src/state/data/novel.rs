@@ -2,6 +2,7 @@ use super::super::io::{self, traits::MetadataStore, ChapterData, FileContainer, 
                        Storable};
 use super::{Chapter, Universe};
 
+use rayon::prelude::*;
 use std::io::Error as IoError;
 use utils::InteratorResultExt;
 
@@ -144,6 +145,15 @@ impl Novel {
 
     /// Save this novel and all modified files to disk
     pub fn save(&mut self) -> Result<(), Vec<IoError>> {
+        /* Update & Save metadata file */
+        self.container.on_disk.chapters = self.chapters.par_iter().map(|c| c.name()).collect();
+        if let Err(e) = self.container.on_disk.save(&io::path_append(
+            &self.container.path,
+            &[&format!("{}.novel", self.name)],
+        )) {
+            return Err(vec![e]);
+        }
+
         if let Err(es) = self.chapters
             .iter_mut()
             .filter(|x| x.is_dirty())
@@ -154,5 +164,16 @@ impl Novel {
         } else {
             Ok(())
         }
+    }
+
+    /// Utility function which makes all sections re-count themselves
+    pub fn refresh_word_count(&mut self) {
+        self.chapters.par_iter_mut().for_each(|c| {
+            c.refresh_word_count();
+        });
+    }
+
+    pub fn word_count(&self) -> usize {
+        self.chapters.par_iter().map(|c| c.word_count()).sum()
     }
 }

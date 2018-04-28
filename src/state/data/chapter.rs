@@ -1,7 +1,9 @@
-use super::super::io::traits::MetadataStore;
+use super::super::io::traits::{MetadataStore, Storable};
 use super::super::io::{self, chapter::ChapterData, DocumentData, FileContainer};
 use super::document::Document;
 use utils::InteratorResultExt;
+
+use rayon::prelude::*;
 
 use std::io::Error as IoError;
 
@@ -58,7 +60,7 @@ impl Chapter {
         })
     }
 
-    pub fn add_scene(&mut self, name: String, descr: String) -> &mut Document{
+    pub fn add_scene(&mut self, name: String, descr: String) -> &mut Document {
         self.scenes.push(
             Document::create(
                 name,
@@ -72,11 +74,27 @@ impl Chapter {
 
     /// Utility function to check if this chapter has a certain name
     pub fn is_named(&self, name: &String) -> bool {
-        return *&self.name == *name;
+        *&self.name == *name
+    }
+
+    pub fn name(&self) -> String {
+        self.name.clone()
     }
 
     pub fn is_dirty(&self) -> bool {
         return self.dirty;
+    }
+
+    /// Utility function which makes all sections re-count themselves
+    pub fn refresh_word_count(&mut self) {
+        self.word_count = self.scenes
+            .par_iter_mut()
+            .map(|doc| doc.refresh_word_count())
+            .sum();
+    }
+
+    pub fn word_count(&self) -> usize {
+        self.word_count
     }
 
     /// Get a reference list of chapters
@@ -90,6 +108,14 @@ impl Chapter {
     }
 
     pub fn save(&mut self) -> Result<(), Vec<IoError>> {
+        self.on_disk.on_disk.scenes = self.scenes.par_iter().map(|d| d.name()).collect();
+        if let Err(e) = self.on_disk.on_disk.save(&io::path_append(
+            &self.on_disk.path,
+            &[&format!("{}.chapter", self.name)],
+        )) {
+            return Err(vec![e]);
+        }
+
         self.scenes
             .iter_mut()
             .filter(|x| x.is_dirty())

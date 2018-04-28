@@ -2,6 +2,8 @@ use super::super::io::{self, traits::Storable, DocumentData, FileContainer};
 use state::text::{Paragraph, Sentence, TextStyle};
 use std::io::Error as IoError;
 
+use rayon::prelude::*;
+
 /// A document in a novel or universe
 ///
 /// This can either be a scene, a note, a template or an
@@ -51,6 +53,10 @@ impl Document {
         return *&self.name == *name;
     }
 
+    pub fn name(&self) -> String {
+        self.name.clone()
+    }
+
     /// Return whether this file has changes
     pub fn is_dirty(&self) -> bool {
         return self.dirty;
@@ -94,6 +100,12 @@ impl Document {
             .append()
             .push_text(word, TextStyle::Plain);
         self.dirty = true;
+    }
+
+    /// Utility function which makes all sections re-count themselves
+    pub fn refresh_word_count(&mut self) -> usize {
+        self.word_count = self.text.par_iter_mut().map(|p| p.wordcount()).sum();
+        self.word_count
     }
 
     /// Write down a document to disk

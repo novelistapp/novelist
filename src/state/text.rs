@@ -1,5 +1,7 @@
 /// Common text types shared between the data and I/O layers
 
+use rayon::prelude::*;
+
 /// A complete text Paragraph that ends with a "." (normally)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Paragraph {
@@ -12,7 +14,7 @@ impl Paragraph {
     }
 
     pub fn wordcount(&self) -> usize {
-        self.snippets.iter().map(|x| x.wordcount()).sum()
+        self.snippets.par_iter().map(|x| x.wordcount()).sum()
     }
 
     pub fn snippets(&mut self) -> &mut Vec<Sentence> {

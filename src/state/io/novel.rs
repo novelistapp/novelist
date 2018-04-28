@@ -2,6 +2,8 @@ use super::chapter::ChapterData;
 use super::path_append;
 use super::traits::*;
 
+use rayon::prelude::*;
+
 use std::fmt::Debug;
 use std::io::{Error as IoError, Read};
 use std::{fs::{self, File},
@@ -23,10 +25,10 @@ pub struct NovelData {
 impl Storable for NovelData {}
 
 /// MetadataStore is used to pull chilf-metadata objects in
-impl<T: Storable> MetadataStore<T> for NovelData {
+impl<T: Storable + Send> MetadataStore<T> for NovelData {
     fn pull(&self, base: &str) -> Result<Vec<T>, IoError> {
         let paths = self.fetch(&path_append(&base, &["Novel", "Chapters"]), "chapter")?;
-        Ok(paths.into_iter().filter_map(|p| T::load(&p).ok()).collect())
+        Ok(paths.into_par_iter().filter_map(|p| T::load(&p).ok()).collect())
     }
 }
 
