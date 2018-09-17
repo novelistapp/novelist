@@ -18,5 +18,8 @@ impl HeaderMenu {
 }
 
 impl Component for HeaderMenu {
-    fn init(&mut self) {}
+    fn init(&mut self) {
+        self.inner.set_show_close_button(true);
+        self.inner.set_title("Novelist");
+    }
 }
