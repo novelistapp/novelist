@@ -1,20 +1,22 @@
 use crate::ui::Component;
-use gtk::{self, HeaderBar, HeaderBarExt, MenuToolButton, MenuToolButtonExt};
+use gtk::{
+    self, Image, HeaderBar, HeaderBarExt, MenuToolButton, MenuToolButtonExt, MenuButton, ToolButton, ToolButtonExt,
+};
 
 pub struct HeaderMenu {
     inner: HeaderBar,
 
     /* From the left */
-    add_object: MenuToolButton,
-    del_object: MenuToolButton,
-    formatting: MenuToolButton,
-    alignment: MenuToolButton,
-    write_mode: MenuToolButton,
+    add_object: ToolButton,
+    del_object: ToolButton,
+    formatting: ToolButton,
+    alignment: ToolButton,
+    write_mode: ToolButton,
 
     /* From the right */
-    global_menu: MenuToolButton,
-    save_as: MenuToolButton,
-    save: MenuToolButton,
+    global_menu: ToolButton,
+    save_as: ToolButton,
+    save: ToolButton,
 }
 
 impl HeaderMenu {
@@ -22,14 +24,14 @@ impl HeaderMenu {
     pub fn new() -> Self {
         Self {
             inner: HeaderBar::new(),
-            add_object: MenuToolButton::new_from_stock("gtk-new"),
-            del_object: MenuToolButton::new_from_stock("gtk-new"),
-            formatting: MenuToolButton::new_from_stock("gtk-new"),
-            alignment: MenuToolButton::new_from_stock("gtk-new"),
-            write_mode: MenuToolButton::new_from_stock("gtk-new"),
-            global_menu: MenuToolButton::new_from_stock("gtk-new"),
-            save_as: MenuToolButton::new_from_stock("gtk-new"),
-            save: MenuToolButton::new_from_stock("gtk-new"),
+            add_object: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Add"),
+            del_object: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Delete"),
+            formatting: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Formatting"),
+            alignment: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Text Align"), 
+            write_mode: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Write Mode"),
+            global_menu: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Global Menu"),
+            save_as: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Save As"),   
+            save: ToolButton::new(&Image::new_from_icon_name("gtk-add", 32), "Save"),      
         }
     }
 
@@ -42,6 +44,7 @@ impl Component for HeaderMenu {
     fn init(&mut self) {
         self.inner.set_show_close_button(true);
         self.inner.set_title("Novelist");
+        self.inner.set_subtitle("<No Project>");
 
         /* Pack left */
         self.inner.pack_start(&self.add_object);
