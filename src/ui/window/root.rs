@@ -34,7 +34,7 @@ impl Component for RootWindow {
             gtk::main_quit();
             gtk::Inhibit(false)
         });
-        self.inner.set_titlebar(self.header_menu.get_mut_bar());
+        self.inner.set_titlebar(&*self.header_menu.get_mut_bar());
         self.inner.show_all();
     }
 }
