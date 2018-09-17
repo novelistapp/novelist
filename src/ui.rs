@@ -20,9 +20,9 @@
 //! 
 //! The master window is parent to all components.
 
-mod popover;
-mod widgets;
-mod window;
+pub mod popover;
+pub mod widgets;
+pub mod window;
 
 use gtk;
 
@@ -40,8 +40,8 @@ pub(crate) trait Component {
 pub(crate) fn start_ui() {
     gtk::init().unwrap();
 
-    let mut win = window::root::RootWindow::new();
-    win.init();
+    let mut w = window::root::RootWindow::new();
+    w.init();
 
     gtk::main();
 }

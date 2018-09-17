@@ -1,10 +1,13 @@
 //! Root window UI context
 
 use crate::ui::Component;
-use gtk::{self, WidgetExt, Window, WindowType};
+use gtk::{self, GtkWindowExt, HeaderBar, HeaderBarExt, Widget, WidgetExt, Window, WindowType};
+
+use ui::widgets::headermenu::HeaderMenu;
 
 pub struct RootWindow {
     inner: Window,
+    header_menu: HeaderMenu,
     editor: (),
     toolbar: (),
     explorer_panel: (),
@@ -16,6 +19,7 @@ impl RootWindow {
     pub fn new() -> Self {
         Self {
             inner: Window::new(WindowType::Toplevel),
+            header_menu: HeaderMenu::new(),
             editor: (),
             toolbar: (),
             explorer_panel: (),
@@ -30,6 +34,7 @@ impl Component for RootWindow {
             gtk::main_quit();
             gtk::Inhibit(false)
         });
+        self.inner.set_titlebar(self.header_menu.get_mut_bar());
         self.inner.show_all();
     }
 }
