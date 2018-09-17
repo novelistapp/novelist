@@ -27,14 +27,21 @@ mod window;
 use gtk;
 
 /// Purely a marker trait for collections
-pub(crate) trait Component {}
+pub(crate) trait Component {
+    /// A function that is called on *all* components after initialisation
+    /// 
+    /// This function should do things like set-up callbacks,
+    /// events and actions that can be triggered by the
+    /// object outside of it's creation process.
+    fn init(&mut self);
+}
 
 /// **Blocking function** which initialises all UI elements
 pub(crate) fn start_ui() {
     gtk::init().unwrap();
 
     let mut win = window::root::RootWindow::new();
-    win.display();
+    win.init();
 
     gtk::main();
 }

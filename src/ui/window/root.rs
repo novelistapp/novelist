@@ -1,7 +1,7 @@
 //! Root window UI context
 
-use gtk::{Window, WindowType};
-use gtk::WidgetExt;
+use crate::ui::Component;
+use gtk::{self, WidgetExt, Window, WindowType};
 
 pub struct RootWindow {
     inner: Window,
@@ -22,8 +22,14 @@ impl RootWindow {
             info_panel: (),
         }
     }
+}
 
-    pub fn display(&mut self) {
+impl Component for RootWindow {
+    fn init(&mut self) {
+        self.inner.connect_delete_event(|_, _| {
+            gtk::main_quit();
+            gtk::Inhibit(false)
+        });
         self.inner.show_all();
     }
 }
