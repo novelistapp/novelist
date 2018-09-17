@@ -1,8 +1,9 @@
 //! Root window UI context
 
 use gtk::{Window, WindowType};
+use gtk::WidgetExt;
 
-struct RootWindow {
+pub struct RootWindow {
     inner: Window,
     editor: (),
     toolbar: (),
@@ -20,5 +21,9 @@ impl RootWindow {
             explorer_panel: (),
             info_panel: (),
         }
+    }
+
+    pub fn display(&mut self) {
+        self.inner.show_all();
     }
 }

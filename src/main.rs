@@ -24,7 +24,7 @@ mod utils;
 mod ui;
 
 fn main() {
-    
+    ui::start_ui();
 
     // if gtk::init().is_err() {
     //     println!("Failed to initialize GTK.");

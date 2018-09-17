@@ -24,5 +24,17 @@ mod popover;
 mod widgets;
 mod window;
 
+use gtk;
+
 /// Purely a marker trait for collections
 pub(crate) trait Component {}
+
+/// **Blocking function** which initialises all UI elements
+pub(crate) fn start_ui() {
+    gtk::init().unwrap();
+
+    let mut win = window::root::RootWindow::new();
+    win.display();
+
+    gtk::main();
+}
