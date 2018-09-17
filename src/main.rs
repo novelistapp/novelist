@@ -1,10 +1,10 @@
-#![feature(iterator_flatten)]
 // Make clippy shut up about a whole bunch
 //    of stuff we don't care about right now...
 #![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(unused_mut)]
+#![feature(non_modrs_mods)]
 
 extern crate serde;
 #[macro_use]
@@ -22,14 +22,15 @@ use std::env::args;
 pub mod gui;
 mod state;
 mod utils;
-
-use state::data::{Chapter, Document, Novel};
+mod ui;
 
 fn main() {
-    if gtk::init().is_err() {
-        println!("Failed to initialize GTK.");
-        return;
-    }
-    let application = gui::get_application();
-    application.run(&args().collect::<Vec<_>>());
+    
+
+    // if gtk::init().is_err() {
+    //     println!("Failed to initialize GTK.");
+    //     return;
+    // }
+    // let application = gui::get_application();
+    // application.run(&args().collect::<Vec<_>>());
 }
