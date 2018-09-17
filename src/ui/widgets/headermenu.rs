@@ -12,8 +12,8 @@ impl HeaderMenu {
         }
     }
 
-    pub fn get_mut_bar(&mut self) -> &mut HeaderBar {
-        &mut self.inner
+    pub fn get_inner_ref(&self) -> &HeaderBar {
+        &self.inner
     }
 }
 
