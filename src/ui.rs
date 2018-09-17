@@ -23,3 +23,6 @@
 mod popover;
 mod widgets;
 mod window;
+
+/// Purely a marker trait for collections
+pub(crate) trait Component {}

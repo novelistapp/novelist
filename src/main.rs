@@ -1,16 +1,15 @@
 // Make clippy shut up about a whole bunch
 //    of stuff we don't care about right now...
+
 #![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(unused_mut)]
-#![feature(non_modrs_mods)]
 
-extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
-
+extern crate serde;
 extern crate rayon;
 
 extern crate gio;
