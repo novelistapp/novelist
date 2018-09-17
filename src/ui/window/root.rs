@@ -37,6 +37,7 @@ impl Component for RootWindow {
 
         self.header_menu.init();
         self.inner.set_titlebar(self.header_menu.get_inner_ref());
+        self.inner.set_default_size(800, 600);
         self.inner.show_all();
     }
 }
