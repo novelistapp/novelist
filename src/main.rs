@@ -1,16 +1,14 @@
 // Make clippy shut up about a whole bunch
 //    of stuff we don't care about right now...
 
-#![allow(dead_code)]
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(unused_mut)]
+#![allow(unused)]
+#![feature(crate_in_paths)]
 
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
-extern crate serde;
 extern crate rayon;
+extern crate serde;
+extern crate serde_json;
 
 extern crate gio;
 extern crate gtk;
@@ -20,8 +18,8 @@ use std::env::args;
 
 pub mod gui;
 mod state;
-mod utils;
 mod ui;
+mod utils;
 
 fn main() {
     ui::start_ui();
