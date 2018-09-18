@@ -13,6 +13,11 @@ extern crate serde_json;
 extern crate gio;
 extern crate gtk;
 
+#[macro_use]
+extern crate log;
+extern crate fern;
+extern crate chrono;
+
 use gio::ApplicationExtManual;
 use std::env::args;
 
@@ -20,8 +25,10 @@ pub mod gui;
 mod state;
 mod ui;
 mod utils;
+mod logger;
 
 fn main() {
+    logger::setup_logger().expect("Failed to initialise `stdout` logger – this is not good!");
     ui::start_ui();
 
     // if gtk::init().is_err() {

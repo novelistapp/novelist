@@ -1,4 +1,5 @@
 use crate::ui::{
+    popover::{CreatePopover, FormattingPopover},
     traits::Component,
     widgets::{ImageButton, ImageMenuButton},
 };
@@ -19,6 +20,10 @@ pub struct HeaderMenu {
     global_menu: ImageButton,
     save_as: ImageMenuButton,
     save: ImageButton,
+
+    /* Spawnable menu types */
+    formatting_menu: FormattingPopover,
+    create_menu: CreatePopover,
 }
 
 impl HeaderMenu {
@@ -33,6 +38,8 @@ impl HeaderMenu {
             global_menu: ImageButton::new("fuck knows", "Global Menu", 32),
             save_as: ImageMenuButton::new("gtk-save-as", "Save As", 32),
             save: ImageButton::new("gtk-save", "Save", 32),
+            formatting_menu: FormattingPopover::new(),
+            create_menu: CreatePopover::new(),
         }
     }
 }
@@ -56,6 +63,13 @@ impl Component for HeaderMenu {
         self.inner.pack_end(self.global_menu.as_ref());
         self.inner.pack_end(self.save_as.as_ref());
         self.inner.pack_end(self.save.as_ref());
+
+        /* Map popovers */
+        self.formatting_menu.init(self.formatting.as_ref());
+        self.create_menu.init(self.add_object.as_ref());
+
+        /* Map events */
+        // TODO: Create events :)
     }
 
     fn as_ref(&self) -> &Self::WrappedType {
