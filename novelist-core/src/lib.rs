@@ -2,7 +2,7 @@
 //!
 //! Handles all common functions, data mapping
 //! and persistence as well as utilit code.
-#![feature(custom_attribute)]
+#![allow(unused)]
 
 pub extern crate log;
 
