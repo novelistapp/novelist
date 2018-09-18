@@ -1,4 +1,5 @@
-use crate::ui::traits::{Component, NovelistPopover};
+use crate::traits::{Component, NovelistPopover};
+
 use gtk::{self, prelude::*, *};
 
 /// Displays a list of items to be created (drop-down menu-like)

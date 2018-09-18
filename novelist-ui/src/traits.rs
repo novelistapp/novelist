@@ -22,7 +22,7 @@ pub trait Component {
 pub trait PopoverButton {
     type Spawns: NovelistPopover;
 
-    fn set_popover(&mut self, impl NovelistPopover);
+    fn set_popover(&mut self, _: impl NovelistPopover);
 }
 
 /// A zero-sized marker trait

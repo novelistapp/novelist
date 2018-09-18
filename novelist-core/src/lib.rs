@@ -2,9 +2,8 @@
 //!
 //! Handles all common functions, data mapping
 //! and persistence as well as utilit code.
-#![feature(crate_in_paths)]
+#![feature(custom_attribute)]
 
-#[macro_use]
 pub extern crate log;
 
 #[macro_use]

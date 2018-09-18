@@ -24,10 +24,17 @@
 //! (more on that...soon)
 //!
 //! The master window is parent to all components.
+#![allow(unused)]
 
-extern crate novelist_core;
+extern crate novelist_core as core;
+
+#[macro_use]
+extern crate log;
+extern crate fern;
 
 mod icons;
+pub use self::icons::Icons;
+
 mod popover;
 mod traits;
 mod widgets;

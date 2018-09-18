@@ -1,4 +1,4 @@
-use crate::ui::{traits::Component, Icons};
+use crate::{traits::Component, Icons};
 use gtk::{self, *};
 
 /// A wrapper for a menu button with an image

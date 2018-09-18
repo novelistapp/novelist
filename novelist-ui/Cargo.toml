@@ -7,6 +7,9 @@ edition = "2018"
 
 [dependencies]
 novelist-core = { path = "../novelist-core" }
+log = "0.4"
+fern = "0.5"
+
 
 gtk = "0.5.0"
 gio = "0.5.0"

@@ -1,4 +1,4 @@
-use crate::ui::{
+use crate::{
     popover::{CreatePopover, FormattingPopover},
     traits::Component,
     widgets::{ImageButton, ImageMenuButton},

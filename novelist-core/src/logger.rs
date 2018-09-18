@@ -3,7 +3,7 @@ use fern;
 use log;
 use std::io;
 
-pub fn setup_logger() -> Result<(), fern::InitError> {
+pub fn setup() -> Result<(), fern::InitError> {
     fern::Dispatch::new()
         .format(|out, message, record| {
             out.finish(format_args!(

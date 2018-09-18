@@ -1,4 +1,5 @@
-use crate::ui::traits::{Component, NovelistPopover};
+use crate::traits::{Component, NovelistPopover};
+
 use gtk::{self, prelude::*, *};
 
 /// Containts formatting settings
