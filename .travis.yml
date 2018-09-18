@@ -35,7 +35,7 @@ env:
 # - source ~/.cargo/env || true
 
 script:
-  - echo "Fuck knows ¯\_(ツ)_/¯"
+  - cargo build
 # - bash ci/script.sh
 
 after_script: set +e
