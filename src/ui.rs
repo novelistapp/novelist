@@ -20,30 +20,15 @@
 //!
 //! The master window is parent to all components.
 
-pub mod popover;
-pub mod utilities;
-pub mod widgets;
-pub mod window;
+pub(crate) mod popover;
+pub(crate) mod traits;
+pub(crate) mod widgets;
+pub(crate) mod window;
 
-use gtk::{self, IsA, Widget};
+use gtk;
 
-/// Purely a marker trait for collections
-pub(crate) trait Component {
-    type WrappedType: IsA<Widget>;
-
-    /// A function that is called on *all* components after initialisation
-    ///
-    /// This function should do things like set-up callbacks,
-    /// events and actions that can be triggered by the
-    /// object outside of it's creation process.
-    fn init(&mut self);
-
-    /// Simply return a reference to the inner wrap type
-    fn as_ref(&self) -> &Self::WrappedType;
-
-    /// Return a mutable reference to the inner wrap type
-    fn inner_mut_ref(&mut self) -> &mut Self::WrappedType;
-}
+mod icons;
+pub(crate) use self::icons::*;
 
 /// **Blocking function** which initialises all UI elements
 pub(crate) fn start_ui() {

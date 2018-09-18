@@ -1,11 +1,8 @@
 use crate::ui::{
+    traits::Component,
     widgets::{ImageButton, ImageMenuButton},
-    Component,
 };
-use gtk::{
-    self, HeaderBar, HeaderBarExt, Image, IsA, MenuButton, MenuToolButton, MenuToolButtonExt,
-    ToolButton, ToolButtonExt, Widget,
-};
+use gtk::{self, *};
 
 /// The main menu at the top of a Novelist window
 pub struct HeaderMenu {
@@ -14,9 +11,9 @@ pub struct HeaderMenu {
     /* From the left */
     add_object: ImageMenuButton,
     del_object: ImageButton,
-    formatting: ImageMenuButton,
-    alignment: ImageMenuButton,
-    write_mode: ImageMenuButton,
+    formatting: ImageButton,
+    alignment: ImageButton,
+    write_mode: ImageButton,
 
     /* From the right */
     global_menu: ImageButton,
@@ -25,15 +22,14 @@ pub struct HeaderMenu {
 }
 
 impl HeaderMenu {
-    #[allow(deprecated)]
     pub fn new() -> Self {
         Self {
             inner: HeaderBar::new(),
             add_object: ImageMenuButton::new("gtk-new", "Add", 32),
             del_object: ImageButton::new("gtk-delete", "Delete", 32),
-            formatting: ImageMenuButton::new("gtk-italic", "Formatting", 32),
-            alignment: ImageMenuButton::new("gtk-justify-left", "Text Aligment", 32),
-            write_mode: ImageMenuButton::new("gtk-edit", "Write Mode", 32),
+            formatting: ImageButton::new("gtk-italic", "Formatting", 32),
+            alignment: ImageButton::new("gtk-justify-left", "Text Aligment", 32),
+            write_mode: ImageButton::new("gtk-edit", "Write Mode", 32),
             global_menu: ImageButton::new("fuck knows", "Global Menu", 32),
             save_as: ImageMenuButton::new("gtk-save-as", "Save As", 32),
             save: ImageButton::new("gtk-save", "Save", 32),

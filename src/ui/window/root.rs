@@ -1,7 +1,7 @@
 //! Root window UI context
 
-use crate::ui::Component;
-use gtk::{self, GtkWindowExt, HeaderBar, HeaderBarExt, Widget, WidgetExt, Window, WindowType};
+use crate::ui::traits::Component;
+use gtk::{self, *};
 
 use ui::widgets::HeaderMenu;
 
