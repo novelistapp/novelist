@@ -2,9 +2,9 @@ extern crate clap;
 extern crate novelist_core as core;
 extern crate novelist_ui as ui;
 
-use core::logging;
+use crate::core::logger;
 
 fn main() {
-    logging::setup_logger().expect("Failed to initialise stdout logger!");
+    logger::setup().expect("Failed to initialise stdout logger!");
     ui::start_ui();
 }

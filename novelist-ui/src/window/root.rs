@@ -1,9 +1,10 @@
 //! Root window UI context
 
-use crate::ui::traits::Component;
+use crate::traits::Component;
+use crate::widgets::HeaderMenu;
+
 use gtk::{self, *};
 
-use ui::widgets::HeaderMenu;
 
 pub struct RootWindow {
     inner: Window,
