@@ -1,0 +1,17 @@
+[package]
+name = "novelist-ui"
+version = "0.1.0"
+authors = [ "Katharina Fey <kookie@spacekookie.de>", 
+            "Martin Holzhauer <martin@holzhauer.eu>" ]
+edition = "2018"
+
+[dependencies]
+novelist-core = { path = "../novelist-core" }
+
+gtk = "0.5.0"
+gio = "0.5.0"
+
+
+[features]
+default = ["gtk_3_20"]
+gtk_3_20 = ["gtk/v3_20"]

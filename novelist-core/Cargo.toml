@@ -1,0 +1,16 @@
+[package]
+name = "novelist-core"
+version = "0.1.0"
+authors = [ "Katharina Fey <kookie@spacekookie.de>", 
+            "Martin Holzhauer <martin@holzhauer.eu>" ]
+edition = "2018"
+
+[dependencies]
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"
+rayon = "1.0"
+
+log = "0.4"
+fern = "0.5"
+chrono = "0.4"
