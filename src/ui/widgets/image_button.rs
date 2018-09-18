@@ -1,5 +1,5 @@
-use crate::ui::Component;
-use gtk::{Image, ToolButton, ToolButtonExt};
+use crate::ui::{Icons, traits::Component};
+use gtk::{self, *};
 
 /// A wrapper for a button with an image
 pub struct ImageButton {
@@ -9,7 +9,7 @@ pub struct ImageButton {
 
 impl ImageButton {
     pub fn new(icon_id: &str, btn_label: &str, size: u32) -> Self {
-        let image = Image::new_from_icon_name(icon_id, size as i32);
+        let image = Icons::get(icon_id, size);
         let inner = ToolButton::new(&image, btn_label);
         Self { inner, image }
     }
