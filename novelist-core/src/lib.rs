@@ -16,6 +16,7 @@ pub extern crate serde_json;
 
 pub mod logger;
 pub mod state;
+pub mod switchboard;
 
 // Some novelist-core internal utils
 mod utils;
