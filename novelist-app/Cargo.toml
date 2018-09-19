@@ -7,5 +7,5 @@ edition = "2018"
 
 [dependencies]
 novelist-core = { path = "../novelist-core" }
-novelist-ui = { path = "../novelist-ui" }
+novelist-gtk = { path = "../novelist-gtk" }
 clap = "2.0"
