@@ -4,6 +4,7 @@
 //! and persistence as well as utilit code.
 #![allow(unused)]
 
+#[macro_use]
 pub extern crate log;
 
 #[macro_use]
