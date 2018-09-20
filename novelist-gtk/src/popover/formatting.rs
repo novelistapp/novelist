@@ -19,12 +19,22 @@ impl FormattingPopover {
         /* Chain the std-init call on top */
         <Self as Component>::init(self, switch);
     }
+
+    pub fn show(&self) {
+        let f = self.inner.as_ref().unwrap();
+        f.show();
+    }
 }
 
 impl Component for FormattingPopover {
     type WrappedType = Popover;
 
-    fn init(&mut self, switch: &Switchboard) {}
+    fn init(&mut self, switch: &Switchboard) {
+
+        let r = switch.add_slot("formatting_show");
+
+
+    }
 
     fn as_ref(&self) -> &Self::WrappedType {
         if self.inner.is_none() {

@@ -3,7 +3,7 @@
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::sync::{
-    mpsc::{self, channel},
+    mpsc::{self, channel, Receiver, Sender},
     RwLock,
 };
 use std::thread;
@@ -58,7 +58,7 @@ use std::thread;
 ///
 /// After that all components can share data via channels.
 pub struct Switchboard {
-    slots: RwLock<HashMap<String, Box<Slot>>>,
+    slots: RwLock<HashMap<String, Sender<Event>>>,
 }
 
 /// A slot is simply a function we call with an `Event`
@@ -72,32 +72,37 @@ impl Switchboard {
         }
     }
 
-    /// **Not Implemented** – **Do not call**
-    /// 
-    /// Generate MPSC endpoints and fork
-    pub fn spawn(&self) {
-        thread::spawn(|| {});
-        unimplemented!()
-    }
+    // /// **Not Implemented** – **Do not call**
+    // ///
+    // /// Generate MPSC endpoints and fork
+    // pub fn spawn(&self) {
+    //     thread::spawn(|| {});
+    //     unimplemented!()
+    // }
 
     /// Adds a new slot to an ID, removing the previous one
-    /// 
+    ///
     /// This will shortly aquire write-access to the slot list
     /// which will block all other reads that are currently
     /// trying to happen.
-    /// 
+    ///
     /// Avoid this expensive call as often as possible.
-    pub fn add_slot(&self, id: &str, slot: Box<Slot>) {
+    pub fn add_slot(&self, id: &str) -> Receiver<Event> {
+        let (s, r) = channel();
+
         let mut w = self.slots.write().unwrap();
-        w.insert(String::from(id), slot);
+        w.insert(String::from(id), s);
+        drop(w);
+
+        r
     }
 
     /// Removes a slot again, warning if none existed
-    /// 
+    ///
     /// This will shortly aquire write-access to the slot list
     /// which will block all other reads that are currently
     /// trying to happen.
-    /// 
+    ///
     /// Avoid this expensive call as often as possible.
     pub fn del_slot(&self, id: &str) {
         let mut w = self.slots.write().unwrap();
@@ -107,20 +112,28 @@ impl Switchboard {
     }
 
     /// Send a signal to a slot
-    /// 
-    /// Will only warn if no slot was responsible
-    pub fn signal(&self, id: &str, event: Event) {
+    ///
+    /// Receive a send handle for a slot
+    pub fn signal(&self, id: &str, event: Event) -> Option<Sender<Event>> {
         match self.slots.read().unwrap().get(id) {
-            Some(slot) => slot(event),
-            None => warn!("Unknown slot '{}' notified", id),
+            Some(s) => Some(s.clone()),
+            None => {
+                warn!("Unknown slot '{}' notified", id);
+                None
+            }
         }
     }
 }
 
 /// Message type created by signals
-pub enum Event<'outer> {
+pub enum Event {
     /// Simply notify a slot
     Notify,
     /// Notify a slot with a lazy text payload
-    Payload(Cow<'outer, str>),
+    Payload(&'static str),
+}
+
+pub enum NewEvent<'outer, T> {
+    Notify(&'outer T),
+    NotifyMut(&'outer mut T),
 }
