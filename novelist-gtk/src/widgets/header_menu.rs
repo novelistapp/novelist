@@ -2,6 +2,7 @@ use crate::{
     popover::{CreatePopover, FormattingPopover},
     traits::Component,
     widgets::{ImageButton, ImageMenuButton},
+    Switchboard,
 };
 use gtk::{self, *};
 
@@ -47,7 +48,7 @@ impl HeaderMenu {
 impl Component for HeaderMenu {
     type WrappedType = HeaderBar;
 
-    fn init(&mut self) {
+    fn init(&mut self, switch: &Switchboard) {
         self.inner.set_show_close_button(true);
         self.inner.set_title("Novelist");
         self.inner.set_subtitle("<No Project>");
@@ -65,8 +66,8 @@ impl Component for HeaderMenu {
         self.inner.pack_end(self.save.as_ref());
 
         /* Map popovers */
-        self.formatting_menu.init(self.formatting.as_ref());
-        self.create_menu.init(self.add_object.as_ref());
+        self.formatting_menu.init(self.formatting.as_ref(), switch);
+        self.create_menu.init(self.add_object.as_ref(), switch);
 
         /* Map events */
         // TODO: Create events :)

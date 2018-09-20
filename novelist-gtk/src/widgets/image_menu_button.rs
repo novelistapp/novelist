@@ -1,4 +1,5 @@
 use crate::{traits::Component, Icons};
+use crate::core::switchboard::Switchboard;
 use gtk::{self, *};
 
 /// A wrapper for a menu button with an image
@@ -18,7 +19,7 @@ impl ImageMenuButton {
 impl Component for ImageMenuButton {
     type WrappedType = MenuToolButton;
 
-    fn init(&mut self) {}
+    fn init(&mut self, _: &Switchboard) {}
 
     fn as_ref(&self) -> &Self::WrappedType {
         &self.inner

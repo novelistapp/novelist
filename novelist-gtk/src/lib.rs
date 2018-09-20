@@ -40,17 +40,18 @@ mod traits;
 mod widgets;
 mod window;
 
+use crate::core::switchboard::Switchboard;
 use crate::traits::Component;
 use gtk;
 
 /// **Blocking function** which initialises all UI elements
-pub fn start_ui() {
+pub fn start_ui(switch: &Switchboard) {
     gtk::init().unwrap();
 
     let mut w = window::root::RootWindow::new();
 
     debug!("Initialising Novelist root window");
-    w.init();
+    w.init(switch);
 
     gtk::main();
 }
