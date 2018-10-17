@@ -26,14 +26,14 @@ impl Document {
             DocumentData::create(name.clone(), description.clone(), dir)?,
         );
 
-        return Ok(Self {
+        Ok(Self {
             name,
             description,
             word_count: 0,
             text: Vec::new(),
             on_disk,
             dirty: false,
-        });
+        })
     }
 
     pub fn load(data: DocumentData, base: &str) -> Self {
@@ -50,35 +50,35 @@ impl Document {
 
     /// Utility function to check if this chapter has a certain name
     pub fn is_named(&self, name: &String) -> bool {
-        return *&self.name == *name;
+        *&self.name == *name
     }
 
     pub fn name(&self) -> String {
         self.name.clone()
     }
 
-    /// Return whether this file has changes
+    /// whether this file has changes
     pub fn is_dirty(&self) -> bool {
-        return self.dirty;
+        self.dirty
     }
 
     /// Get the paragraph which contains the current cursor index.
     pub fn get_paragraph(&mut self, index: usize) -> Option<&mut Paragraph> {
         let mut acc = 0;
-        return self
+        self
             .text
             .iter_mut()
             .take_while(|x| {
                 acc += x.wordcount();
                 acc < index
-            }).last();
+            }).last()
     }
 
     /// Get the underlying sentence which contains the current
     /// cursor index.
     pub fn get_sentence(&mut self, index: usize) -> Option<&mut Sentence> {
         let mut acc = 0;
-        return self
+        self
             .text
             .iter_mut()
             .map(|x| x.snippets())
@@ -86,7 +86,7 @@ impl Document {
             .take_while(|x| {
                 acc += x.wordcount();
                 acc < index
-            }).last();
+            }).last()
     }
 
     /// Append a string into the latest paragraph
@@ -115,16 +115,16 @@ impl Document {
             &self.on_disk.path,
             &[&format!("{}.scene", &self.name)],
         ))?;
-        return Ok(());
+        Ok(())
     }
 }
 
 impl Into<DocumentData> for Document {
     fn into(self) -> DocumentData {
-        return DocumentData {
+        DocumentData {
             name: self.name,
             description: self.description,
             text: self.text,
-        };
+        }
     }
 }
