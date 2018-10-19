@@ -32,6 +32,12 @@ extern crate novelist_core as core;
 extern crate log;
 extern crate fern;
 
+#[macro_use]
+extern crate relm;
+extern crate relm_attributes;
+#[macro_use]
+extern crate relm_derive;
+
 mod icons;
 pub use self::icons::Icons;
 
