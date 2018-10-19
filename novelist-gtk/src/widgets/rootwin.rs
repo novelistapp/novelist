@@ -21,12 +21,13 @@ pub struct Model {
 }
 
 #[derive(Msg)]
-pub enum Event {
-}
+pub enum Event {}
 
 #[widget]
 impl Widget for RootWindow {
     fn init_view(&mut self) {
+        self.window.set_titlebar(self.titlebar.widget());
+        self.window.set_default_size(800, 600);
     }
 
     fn model(relm: &Relm<Self>, _: ()) -> Model {
@@ -38,8 +39,13 @@ impl Widget for RootWindow {
     view! {
         #[name="window"]
         gtk::Window {
-            title: "Novelist"
+            title: "Novelist",
+            gtk::Box {
+                orientation: Vertical,
+            },
+            #[name="titlebar"]
+            HeaderBar {}
         },
-        HeaderBar {}
+
     }
 }

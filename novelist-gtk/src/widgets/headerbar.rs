@@ -24,7 +24,7 @@ pub enum Event {
 #[widget]
 impl Widget for HeaderBar {
     fn init_view(&mut self) {
-        self.headerbar.set_subtitle("<Project loaded>");
+        // self.headerbar.set_subtitle("<Project loaded>");
     }
 
     fn model(relm: &Relm<Self>, _: ()) -> Model {
