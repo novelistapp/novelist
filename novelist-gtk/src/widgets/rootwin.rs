@@ -1,30 +1,30 @@
-use gtk::{
-    ButtonExt,
-    Inhibit,
-    LabelExt,
-    OrientableExt,
-    WidgetExt,
-    GtkWindowExt,
-    HeaderBarExt,
-    TextBufferExt,
-    TextViewExt,
-};
 use gtk::prelude::*;
-use gtk::Orientation::{Vertical,Horizontal};
-use relm::{Relm, Widget, timeout};
+use gtk::Orientation::{Horizontal, Vertical};
+use gtk::{
+    ButtonExt, GtkWindowExt, HeaderBarExt, Inhibit, LabelExt, OrientableExt, TextBufferExt,
+    TextViewExt, WidgetExt,
+};
+use relm::{timeout, Relm, Widget};
 use relm_attributes::widget;
 
-use super::headerbar::{self, HeaderBar, Event::Add as HeaderBarAdd};
+use super::headerbar::Event::Add as HeaderBarAdd;
+use super::headerbar::Event::Alignment as HeaderBarAlignment;
+use super::headerbar::Event::Delete as HeaderBarDelete;
+use super::headerbar::Event::Formatting as HeaderBarFormatting;
+use super::headerbar::Event::GlobalMenu as HeaderBarGlobalMenu;
+use super::headerbar::Event::Save as HeaderBarSave;
+use super::headerbar::Event::SaveAs as HeaderBarSaveAs;
+use super::headerbar::Event::WriteMode as HeaderBarWriteMode;
+use super::headerbar::{self, HeaderBar};
+
 use super::workspace::{self, Workspace};
 
-pub struct Model {
-    /* to be determined */
-}
+pub struct Model {/* to be determined */}
 
 #[derive(Msg)]
 pub enum Event {
     Quit,
-    MappingSaveToShow
+    MappingSaveToShow,
 }
 
 #[widget]
@@ -35,11 +35,10 @@ impl Widget for RootWindow {
     }
 
     fn model(relm: &Relm<Self>, _: ()) -> Model {
-        Model { }
+        Model {}
     }
 
     fn update(&mut self, e: Event) {
-        println!("Receiving root windo mapping event");
         match e {
             Event::MappingSaveToShow => self.workspace.emit(workspace::Event::ShowOther),
             Event::Quit => gtk::main_quit(),
@@ -54,7 +53,6 @@ impl Widget for RootWindow {
             Workspace {},
             #[name="titlebar"]
             HeaderBar {
-                // Save => workspace::Event::ShowOther
                 HeaderBarAdd => Event::MappingSaveToShow,
             },
             delete_event(_, _) => (Event::Quit, Inhibit(false)),
