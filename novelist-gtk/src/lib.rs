@@ -41,22 +41,19 @@ extern crate relm_derive;
 mod icons;
 pub use self::icons::Icons;
 
-mod popover;
-mod traits;
 mod widgets;
-mod window;
 
-use crate::traits::Component;
 use gtk;
 
 /// **Blocking function** which initialises all UI elements
 pub fn start_ui() {
-    gtk::init().unwrap();
 
-    let mut w = window::root::RootWindow::new();
+    /* relm stuff */
 
-    debug!("Initialising Novelist root window");
-    w.init();
-
-    gtk::main();
+    // gtk::init().unwrap();
+    // let mut w = window::root::RootWindow::new();
+    // debug!("Initialising Novelist root window");
+    // w.init();
+    // gtk::main();
 }
+//hacker typer mode: ON
