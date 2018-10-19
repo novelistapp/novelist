@@ -1,4 +1,4 @@
-use crate::{traits::Component, Icons, Switchboard};
+use crate::{traits::Component, Icons};
 use gtk::{self, *};
 
 /// A wrapper for a button with an image
@@ -18,7 +18,7 @@ impl ImageButton {
 impl Component for ImageButton {
     type WrappedType = ToolButton;
 
-    fn init(&mut self, _: &Switchboard) {}
+    fn init(&mut self) {}
 
     fn as_ref(&self) -> &Self::WrappedType {
         &self.inner

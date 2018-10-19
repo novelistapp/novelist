@@ -1,5 +1,4 @@
 use crate::traits::{Component, NovelistPopover};
-use crate::Switchboard;
 
 use gtk::{self, prelude::*, *};
 
@@ -13,11 +12,11 @@ impl FormattingPopover {
         Self { inner: None }
     }
 
-    pub fn init<W: IsA<Widget>>(&mut self, parent: &W, switch: &Switchboard) {
+    pub fn init<W: IsA<Widget>>(&mut self, parent: &W) {
         self.inner = Some(Popover::new(parent));
 
         /* Chain the std-init call on top */
-        <Self as Component>::init(self, switch);
+        <Self as Component>::init(self);
     }
 
     pub fn show(&self) {
@@ -29,12 +28,7 @@ impl FormattingPopover {
 impl Component for FormattingPopover {
     type WrappedType = Popover;
 
-    fn init(&mut self, switch: &Switchboard) {
-
-        let r = switch.add_slot("formatting_show");
-
-
-    }
+    fn init(&mut self) {}
 
     fn as_ref(&self) -> &Self::WrappedType {
         if self.inner.is_none() {
