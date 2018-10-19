@@ -14,14 +14,18 @@ use gtk::Orientation::{Vertical,Horizontal};
 use relm::{Relm, Widget, timeout};
 use relm_attributes::widget;
 
-use super::headerbar::{self, HeaderBar};
+use super::headerbar::{self, HeaderBar, Event::Add as HeaderBarAdd};
+use super::workspace::{self, Workspace};
 
 pub struct Model {
     /* to be determined */
 }
 
 #[derive(Msg)]
-pub enum Event {}
+pub enum Event {
+    Quit,
+    MappingSaveToShow
+}
 
 #[widget]
 impl Widget for RootWindow {
@@ -34,17 +38,26 @@ impl Widget for RootWindow {
         Model { }
     }
 
-    fn update(&mut self, e: Event) {}
+    fn update(&mut self, e: Event) {
+        println!("Receiving root windo mapping event");
+        match e {
+            Event::MappingSaveToShow => self.workspace.emit(workspace::Event::ShowOther),
+            Event::Quit => gtk::main_quit(),
+        }
+    }
 
     view! {
         #[name="window"]
         gtk::Window {
             title: "Novelist",
-            gtk::Box {
-                orientation: Vertical,
-            },
+            #[name = "workspace"]
+            Workspace {},
             #[name="titlebar"]
-            HeaderBar {}
+            HeaderBar {
+                // Save => workspace::Event::ShowOther
+                HeaderBarAdd => Event::MappingSaveToShow,
+            },
+            delete_event(_, _) => (Event::Quit, Inhibit(false)),
         },
 
     }
