@@ -65,8 +65,7 @@ impl Document {
     /// Get the paragraph which contains the current cursor index.
     pub fn get_paragraph(&mut self, index: usize) -> Option<&mut Paragraph> {
         let mut acc = 0;
-        self
-            .text
+        self.text
             .iter_mut()
             .take_while(|x| {
                 acc += x.wordcount();
@@ -78,8 +77,7 @@ impl Document {
     /// cursor index.
     pub fn get_sentence(&mut self, index: usize) -> Option<&mut Sentence> {
         let mut acc = 0;
-        self
-            .text
+        self.text
             .iter_mut()
             .map(|x| x.snippets())
             .flat_map(|x| x.iter_mut())
