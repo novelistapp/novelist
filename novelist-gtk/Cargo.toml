@@ -10,6 +10,9 @@ novelist-core = { path = "../novelist-core" }
 log = "0.4"
 fern = "0.5"
 
+relm = "0.15"
+relm-derive = "0.15"
+relm-attributes = "0.15"
 
 gtk = "0.5.0"
 gio = "0.5.0"
