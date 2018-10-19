@@ -1,5 +1,4 @@
 use gtk::{self, IsA, Widget};
-use crate::core::switchboard::Switchboard;
 
 /// Define some shared characteristics of components
 pub trait Component {
@@ -10,7 +9,7 @@ pub trait Component {
     /// This function should do things like set-up callbacks,
     /// events and actions that can be triggered by the
     /// object outside of it's creation process.
-    fn init(&mut self, switch: &Switchboard);
+    fn init(&mut self);
 
     /// Simply return a reference to the inner wrap type
     fn as_ref(&self) -> &Self::WrappedType;

@@ -2,7 +2,6 @@
 
 use crate::traits::Component;
 use crate::widgets::HeaderMenu;
-use crate::core::switchboard::*;
 
 use gtk::{self, *};
 
@@ -33,13 +32,13 @@ impl RootWindow {
 impl Component for RootWindow {
     type WrappedType = Window;
 
-    fn init(&mut self, switch: &Switchboard) {
+    fn init(&mut self) {
         self.inner.connect_delete_event(|_, _| {
             gtk::main_quit();
             gtk::Inhibit(false)
         });
 
-        self.header_menu.init(switch);
+        self.header_menu.init();
         self.inner.set_titlebar(self.header_menu.as_ref());
         self.inner.set_default_size(800, 600);
         self.inner.show_all();
