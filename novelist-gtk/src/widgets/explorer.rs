@@ -31,6 +31,7 @@ impl Widget for ProjectExplorer {
     view! {
         #[name="container"]
         gtk::Box {
+            property_width_request: 300,
             visible: false,
             orientation: Vertical,
         },
