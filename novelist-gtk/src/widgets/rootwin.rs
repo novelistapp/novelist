@@ -7,15 +7,15 @@ use gtk::{
 use relm::{timeout, Relm, Widget};
 use relm_attributes::widget;
 
-use super::headerbar::Event::Add as HeaderBarAdd;
-use super::headerbar::Event::Alignment as HeaderBarAlignment;
-use super::headerbar::Event::Delete as HeaderBarDelete;
-use super::headerbar::Event::Formatting as HeaderBarFormatting;
-use super::headerbar::Event::GlobalMenu as HeaderBarGlobalMenu;
-use super::headerbar::Event::Save as HeaderBarSave;
-use super::headerbar::Event::SaveAs as HeaderBarSaveAs;
-use super::headerbar::Event::WriteMode as HeaderBarWriteMode;
-use super::headerbar::{self, HeaderBar};
+// use super::headerbar::Event::Add as HeaderBarAdd;
+// use super::headerbar::Event::Alignment as HeaderBarAlignment;
+// use super::headerbar::Event::Delete as HeaderBarDelete;
+// use super::headerbar::Event::Formatting as HeaderBarFormatting;
+// use super::headerbar::Event::GlobalMenu as HeaderBarGlobalMenu;
+// use super::headerbar::Event::Save as HeaderBarSave;
+// use super::headerbar::Event::SaveAs as HeaderBarSaveAs;
+// use super::headerbar::Event::WriteMode as HeaderBarWriteMode;
+use super::headerbar::{self, HeaderBar, Event as HeaderEvent};
 
 use super::workspace::{self, Workspace};
 
@@ -53,7 +53,7 @@ impl Widget for RootWindow {
             Workspace {},
             #[name="titlebar"]
             HeaderBar {
-                HeaderBarAdd => Event::MappingSaveToShow,
+                HeaderEvent::Add => Event::MappingSaveToShow,
             },
             delete_event(_, _) => (Event::Quit, Inhibit(false)),
         },
