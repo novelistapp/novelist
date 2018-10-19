@@ -34,19 +34,21 @@ extern crate fern;
 
 #[macro_use]
 extern crate relm;
-extern crate relm_attributes;
 #[macro_use]
 extern crate relm_derive;
+extern crate relm_attributes;
 
 mod icons;
-pub use self::icons::Icons;
-
 mod widgets;
 
-use gtk;
+use self::icons::Icons;
+use self::widgets::rootwin::RootWindow;
+use relm::{timeout, Relm, Widget};
 
 /// **Blocking function** which initialises all UI elements
 pub fn start_ui() {
+    RootWindow::run(()).expect("RootWindow::run failed!");
+    // Win::run(()).expect("Win::run failed");
 
     /* relm stuff */
 
