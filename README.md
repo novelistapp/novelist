@@ -1,7 +1,6 @@
 ![](assets/novelist.png)
 
-<!-- [![](https://img.shields.io/travis/novelistapp/novelist.svg)](https://travis-ci.org/novelistapp/novelist)
-[![](https://ci.appveyor.com/api/projects/status/yqr13smlo8vax4pq?svg=true)](https://ci.appveyor.com/project/spacekookie/novelist) -->
+[![Travis (.org) branch](https://img.shields.io/travis/novelistapp/novelist/master.svg?style=for-the-badge)](https://travis-ci.org/novelistapp/novelist/) [![forthebadge](https://forthebadge.com/images/badges/designed-in-ms-paint.svg)](https://forthebadge.com)
 
 An awesome text editor for authors.
 
