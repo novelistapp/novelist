@@ -10,6 +10,14 @@ branches:
   - "/^v\\d+\\.\\d+\\.\\d+.*$/"
   - master
 
+rust:
+  - nightly
+  - nightly-2018-08-15
+
+matrix:
+  allow_failures:
+  - rust: nightly
+
 notifications:
   email:
     on_success: never
@@ -36,9 +44,10 @@ env:
 
 script:
   - cargo build
+  - cargo test
 # - bash ci/script.sh
 
-after_script: set +e
+# after_script: set +e
 # before_deploy:
 # - sh ci/before_deploy.sh
 # after_deploy:

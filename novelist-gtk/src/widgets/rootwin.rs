@@ -19,7 +19,11 @@ use super::headerbar::{self, HeaderBar};
 
 use super::workspace::{self, Workspace};
 
-pub struct Model {/* to be determined */}
+use crate::novelist_core::state::AppState;
+
+pub struct Model {
+    app_state: Option<AppState>,
+}
 
 #[derive(Msg)]
 pub enum Event {
@@ -35,7 +39,7 @@ impl Widget for RootWindow {
     }
 
     fn model(relm: &Relm<Self>, _: ()) -> Model {
-        Model {}
+        Model { app_state: None }
     }
 
     fn update(&mut self, e: Event) {
@@ -57,6 +61,5 @@ impl Widget for RootWindow {
             },
             delete_event(_, _) => (Event::Quit, Inhibit(false)),
         },
-
     }
 }

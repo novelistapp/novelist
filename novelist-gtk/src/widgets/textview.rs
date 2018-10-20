@@ -13,6 +13,7 @@ pub struct Model {/* to be determined */}
 pub enum Event {}
 
 #[widget]
+#[allow(deprecated)]
 impl Widget for TextView {
     fn init_view(&mut self) {}
 
@@ -30,8 +31,11 @@ impl Widget for TextView {
                 expand: true,
             },
             gtk::ScrolledWindow {
+                child: {
+                    fill: true,
+                    expand: true,
+                },
                 shadow_type: gtk::ShadowType::In,
-                property_width_request: 600,
 
                 #[name = "textview"]
                 gtk::TextView {
