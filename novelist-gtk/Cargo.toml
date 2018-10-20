@@ -1,3 +1,4 @@
+cargo-features = ["edition"]
 [package]
 name = "novelist-gtk"
 version = "0.1.0"

@@ -1,3 +1,4 @@
+cargo-features = ["edition"]
 [package]
 name = "novelist-app"
 version = "0.1.0"

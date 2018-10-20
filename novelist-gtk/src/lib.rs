@@ -26,7 +26,7 @@
 //! The master window is parent to all components.
 #![allow(unused)]
 
-extern crate novelist_core as core;
+extern crate novelist_core;
 
 #[macro_use]
 extern crate log;
