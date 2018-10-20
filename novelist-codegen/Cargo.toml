@@ -1,3 +1,4 @@
+cargo-features = ["edition"]
 [package]
 name = "novelist-codegen"
 version = "0.1.0"
