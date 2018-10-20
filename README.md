@@ -1,6 +1,6 @@
 ![](assets/novelist.png)
 
-[![Travis (.org) branch](https://img.shields.io/travis/novelistapp/novelist/master.svg?style=for-the-badge)](https://travis-ci.org/novelistapp/novelist/) [![forthebadge](https://forthebadge.com/images/badges/designed-in-ms-paint.svg)](https://forthebadge.com)
+<a href="https://travis-ci.org/novelistapp/novelist/"><img src="https://img.shields.io/travis/novelistapp/novelist/master.svg?style=for-the-badge" height="28px" /></a><img src="https://forthebadge.com/images/badges/designed-in-ms-paint.svg" height="28px" />
 
 An awesome text editor for authors.
 
