@@ -9,9 +9,9 @@ An awesome text editor for authors.
 ## For end-users
 
 Sorry! There isn't much to show off yet. 
-But be sure to check back thegithub
-[releases](https://github.com/novelistapp/novelist/releases) soon!
+But be sure to check the github [releases] soon!
 
+[releases]: https://github.com/novelistapp/novelist/releases 
 
 ## For developers
 
