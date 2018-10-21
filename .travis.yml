@@ -1,10 +1,10 @@
-dist: bionic
-services: docker
+services:
+  - docker
 language: rust
 sudo: required
 cache: cargo
 before_cache:
-- chmod -R a+r $HOME/.cargo
+  - chmod -R a+r $HOME/.cargo
 
 branches:
   only:
