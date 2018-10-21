@@ -33,6 +33,6 @@ script:
   - cargo test --all
 
 before_install:
-  - sudo add-apt-repository ppa:gnome3-team/gnome3
+  - sudo add-apt-repository ppa:gnome3-team/gnome3 -y
   - sudo apt update
   - sudo apt install gnome-devel
