@@ -28,6 +28,11 @@ env:
   global:
   - CRATE_NAME=novelist
 
+before_install:
+  - docker pull novelist/ci:latest
+  - docker run -it -d --name build novelist/ci bash
+  - docker exec build git clone https://github.com/novelistapp/novelist.git
+
 script:
-  - docker run novelist/ci /bin/sh -c "cargo build"
-  - docker run novelist/ci /bin/sh -c "cargo test"
+  - docker exec build /bin/sh -c "cd /novelist; cargo build"
+  - docker exec build /bin/sh -c "cd /novelist; cargo test"
