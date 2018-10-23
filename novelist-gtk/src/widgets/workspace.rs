@@ -17,6 +17,7 @@ pub struct Model {/* to be determined */}
 pub enum Event {
     ToggleExplorer,
     ToggleInfoPanel,
+    RequestOpenProject
 }
 
 #[widget]
@@ -36,6 +37,7 @@ impl Widget for Workspace {
         match e {
             Event::ToggleExplorer => self.explorer.emit(explorer::Event::ToggleVisibility),
             Event::ToggleInfoPanel => self.info_panel.emit(info_bar::Event::ToggleVisibility),
+            _ => warn!("Unknown Event"),
         }
     }
 
@@ -43,12 +45,44 @@ impl Widget for Workspace {
         #[name="workspace"]
         gtk::Box {
             orientation: Horizontal,
-            #[name="explorer"]
-            ProjectExplorer {},
-            #[name="text_view"]
-            TextView {},
-            #[name="info_panel"]
-            InfoPanel {},
+            #[name = "placeholder"]
+            gtk::Box {
+                child: {
+                    fill: true,
+                    expand: true,
+                },
+                orientation: Horizontal,
+                gtk::Box {
+                    visible: true,
+                    child: {
+                        fill: true,
+                        expand: true,
+                    },
+                    orientation: Vertical,
+                    gtk::Label {
+                        label: "Nothing to display. Why don't you open a project?"
+                    },
+                    gtk::Button {
+                        label: "Open Project",
+                        clicked => Event::RequestOpenProject,
+                    },
+                }
+            },
+
+            #[name = "container"]
+            gtk::Box {
+                visible: false,
+                child: {
+                    fill: true,
+                    expand: true,
+                },
+                #[name="explorer"]
+                ProjectExplorer {},
+                #[name="text_view"]
+                TextView {},
+                #[name="info_panel"]
+                InfoPanel {},
+            }
         },
     }
 }
