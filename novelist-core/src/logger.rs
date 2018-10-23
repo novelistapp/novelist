@@ -7,7 +7,7 @@ pub fn setup() -> Result<(), fern::InitError> {
     fern::Dispatch::new()
         .format(|out, message, record| {
             out.finish(format_args!(
-                "{} | {}  | {} | {}",
+                "{} | {:38} | {} | {}",
                 chrono::Local::now().format("(%H:%M:%S)"),
                 record.target(),
                 record.level(),
