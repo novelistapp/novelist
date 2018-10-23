@@ -9,7 +9,7 @@ use relm_attributes::widget;
 
 pub struct Model {/* to be determined */}
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {}
 
 #[widget]

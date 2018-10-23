@@ -13,9 +13,10 @@ use super::info_bar::{self, InfoPanel};
 
 pub struct Model {/* to be determined */}
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {
-    ShowOther
+    ToggleExplorer,
+    ToggleInfoPanel,
 }
 
 #[widget]
@@ -31,16 +32,22 @@ impl Widget for Workspace {
     }
 
     fn update(&mut self, e: Event) {
-        println!("Getting an update on Workspace");
-        // self.other_box_text.set_visible(true);
+        debug!("Getting event: {:?}", e);
+        match e {
+            Event::ToggleExplorer => self.explorer.emit(explorer::Event::ToggleVisibility),
+            Event::ToggleInfoPanel => self.info_panel.emit(info_bar::Event::ToggleVisibility),
+        }
     }
 
     view! {
         #[name="workspace"]
         gtk::Box {
             orientation: Horizontal,
+            #[name="explorer"]
             ProjectExplorer {},
+            #[name="text_view"]
             TextView {},
+            #[name="info_panel"]
             InfoPanel {},
         },
     }

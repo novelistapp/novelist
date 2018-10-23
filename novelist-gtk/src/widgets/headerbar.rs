@@ -9,10 +9,12 @@ use relm_attributes::widget;
 
 pub struct Model {/* to be determined */}
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {
     Add,
     Delete,
+    ToggleExplorer,
+    ToggleInfoBar,
     Formatting,
     Alignment,
     WriteMode,
@@ -31,7 +33,9 @@ impl Widget for HeaderBar {
         Model {}
     }
 
-    fn update(&mut self, e: Event) {}
+    fn update(&mut self, e: Event) {
+        debug!("Getting event: {:?}", e);
+    }
 
     view! {
         #[name="headerbar"]
@@ -49,6 +53,22 @@ impl Widget for HeaderBar {
                 label: "Delete",
                 clicked => Event::Delete
             },
+
+            gtk::Separator { },
+
+            gtk::ToolButton {
+                icon_name: "gtk-dnd-multiple",
+                label: "Explorer",
+                clicked => Event::ToggleExplorer
+            },
+            gtk::ToolButton {
+                icon_name: "dialog-information",
+                label: "Info Panel",
+                clicked => Event::ToggleInfoBar
+            },
+
+            gtk::Separator { },
+
             gtk::ToolButton {
                 icon_name: "format-text-italic",
                 label: "Formatting",
@@ -64,21 +84,35 @@ impl Widget for HeaderBar {
                 label: "Write Mode",
                 clicked => Event::WriteMode
             },
+
             gtk::ToolButton {
+                 child: {
+                    pack_type: ::gtk::PackType::End,
+                },
+
                 icon_name: "preferences-system",
                 label: "Global Menu",
                 clicked => Event::GlobalMenu
             },
             gtk::ToolButton {
+                 child: {
+                    pack_type: ::gtk::PackType::End,
+                },
+
                 icon_name: "document-save-as",
                 label: "Save As",
                 clicked => Event::SaveAs
             },
             gtk::ToolButton {
+                 child: {
+                    pack_type: ::gtk::PackType::End,
+                },
+
                 icon_name: "document-save",
                 label: "Save",
                 clicked => Event::Save
             },
+
             gtk::SearchEntry {
                 child: {
                     pack_type: ::gtk::PackType::End,

@@ -9,7 +9,7 @@ use relm_attributes::widget;
 
 pub struct Model {/* to be determined */}
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {
     ToggleVisibility,
 }
@@ -23,6 +23,7 @@ impl Widget for InfoPanel {
     }
 
     fn update(&mut self, e: Event) {
+        debug!("Getting event: {:?}", e);
         match e {
             Event::ToggleVisibility => self.container.set_visible(!self.container.get_visible()),
         }
@@ -33,6 +34,12 @@ impl Widget for InfoPanel {
         gtk::Box {
             visible: false,
             orientation: Vertical,
+            gtk::TextView {
+                
+            },
+            gtk::TextView {
+                    
+            }
         },
     }
 }

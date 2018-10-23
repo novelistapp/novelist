@@ -7,17 +7,12 @@ use gtk::{
 use relm::{timeout, Relm, Widget};
 use relm_attributes::widget;
 
-use super::headerbar::Event::Add as HeaderBarAdd;
-use super::headerbar::Event::Alignment as HeaderBarAlignment;
-use super::headerbar::Event::Delete as HeaderBarDelete;
-use super::headerbar::Event::Formatting as HeaderBarFormatting;
-use super::headerbar::Event::GlobalMenu as HeaderBarGlobalMenu;
-use super::headerbar::Event::Save as HeaderBarSave;
-use super::headerbar::Event::SaveAs as HeaderBarSaveAs;
-use super::headerbar::Event::WriteMode as HeaderBarWriteMode;
+use super::headerbar::Event::ToggleExplorer as HeaderToggleExplorer;
+use super::headerbar::Event::ToggleInfoBar as HeaderToggleInfoBar;
 use super::headerbar::{self, HeaderBar};
 
 use super::workspace::{self, Workspace};
+use super::explorer::{self, ProjectExplorer};
 
 use crate::novelist_core::state::AppState;
 
@@ -25,10 +20,13 @@ pub struct Model {
     app_state: Option<AppState>,
 }
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {
     Quit,
-    MappingSaveToShow,
+
+    /* Mapping headerbar events */
+    ToggleExplorer,
+    ToggleInfoBar,
 }
 
 #[widget]
@@ -43,9 +41,12 @@ impl Widget for RootWindow {
     }
 
     fn update(&mut self, e: Event) {
+        debug!("Getting event: {:?}", e);
         match e {
-            Event::MappingSaveToShow => self.workspace.emit(workspace::Event::ShowOther),
+            Event::ToggleExplorer => self.workspace.emit(workspace::Event::ToggleExplorer),
+            Event::ToggleInfoBar => self.workspace.emit(workspace::Event::ToggleInfoPanel),
             Event::Quit => gtk::main_quit(),
+            // _ => println!("Unknown event!")
         }
     }
 
@@ -57,7 +58,8 @@ impl Widget for RootWindow {
             Workspace {},
             #[name="titlebar"]
             HeaderBar {
-                HeaderBarAdd => Event::MappingSaveToShow,
+                HeaderToggleExplorer => Event::ToggleExplorer,
+                HeaderToggleInfoBar => Event::ToggleInfoBar,
             },
             delete_event(_, _) => (Event::Quit, Inhibit(false)),
         },

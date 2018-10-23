@@ -9,7 +9,7 @@ use relm_attributes::widget;
 
 pub struct Model {/* to be determined */}
 
-#[derive(Msg)]
+#[derive(Msg, Debug)]
 pub enum Event {
     ToggleVisibility,
 }
@@ -23,6 +23,7 @@ impl Widget for ProjectExplorer {
     }
 
     fn update(&mut self, e: Event) {
+        debug!("Getting event: {:?}", e);
         match e {
             Event::ToggleVisibility => self.container.set_visible(!self.container.get_visible()),
         }
